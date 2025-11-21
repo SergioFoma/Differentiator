@@ -31,12 +31,52 @@ enum typeOfMathOperation {
     ADD     = 0,
     SUB     = 1,
     MUL     = 2,
-    DIV     = 3
+    DIV     = 3,
+    LOG     = 4,
+    LN      = 5,
+    POW     = 6,
+    SIN     = 7,
+    COS     = 8,
+    SQRT    = 9,
+    TG      = 10,
+    CTG     = 11,
+    ARCSIN  = 12,
+    ARCCOS  = 13,
+    ARCTG   = 14,
+    ARCCTG  = 15,
+    SH      = 16,
+    TH      = 17,
+    CTH     = 18,
+    EXP     = 19
 };
 
 enum variablesAndTheyIndex {
     X       = 0,
-    Y       = 1
+    Y       = 1,
+    I       = 2,
+    J       = 3,
+    K       = 4,
+    L       = 5,
+    M       = 6,
+    N       = 7,
+    O       = 8,
+    P       = 9,
+    Q       = 10,
+    R       = 11,
+    S       = 12,
+    A       = 13,
+    B       = 14,
+    C       = 15,
+    Z       = 16,
+    W       = 17,
+    D       = 18,
+    E       = 19,
+    F       = 20,
+    T       = 21,
+    U       = 22,
+    V       = 23,
+    G       = 24,
+    H       = 25
 };
 
 union treeElem_t {

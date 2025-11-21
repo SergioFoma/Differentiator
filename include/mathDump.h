@@ -15,6 +15,16 @@ enum typeOfFunctions {
     NOT_FUNCTION         = 2
 };
 
+struct informationOfMathOperations {
+    typeOfMathOperation typeOp;
+    const char* stringMathOp;
+};
+
+struct informationOfPrefixFunctions{
+    typeOfMathOperation typeOp;
+    void(*func)( FILE* fileForLatex, node_t* node );
+};
+
 treeErrors dumpMathTree( tree_t* tree );
 
 void printMathematicalFormulas( FILE* fileForPrint, node_t* node );
@@ -30,6 +40,14 @@ void viewMathFormula( FILE* fileForLatex, node_t* node );
 void printNumberInLatex( FILE* fileForLatex, node_t* node );
 
 void printFracInLatex( FILE* fileForLatex, node_t* node );
+
+void printSqrtInLatex( FILE* fileForLatex, node_t* node );
+
+void printExpInLatex( FILE* fileForLatex, node_t* node );
+
+void printLogInLatex( FILE* fileForLatex, node_t* node );
+
+void printPowInLatex( FILE* fileForLatex, node_t* node );
 
 operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentNode );
 

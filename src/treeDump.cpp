@@ -18,16 +18,56 @@ informationWithValueType arrayWithValueType[] = {
 size_t sizeOfArrayWithValueType = sizeof( arrayWithValueType ) / sizeof( arrayWithValueType[ 0 ] );
 
 informationWithMathOperators arrayWithMathOperators[] = {
-        { ADD, "ADD", "+"},
-        { SUB, "SUB", "-"},
-        { MUL, "MUL", "*"},
-        { DIV, "DIV", "/"}
+        { ADD   , "ADD"     , "+"      },
+        { SUB   , "SUB"     , "-"      },
+        { MUL   , "MUL"     , "*"      },
+        { DIV   , "DIV"     , "/"      },
+        { LN    , "LN"      , "ln"     },
+        { LOG   , "LOG"     , "log"    },
+        { POW   , "POW"     , "^"      },
+        { SIN   , "SIN"     , "sin"    },
+        { COS   ,  "COS"    , "cos"    },
+        { TG    ,  "TG"     , "tg"     },
+        { CTG   ,  "CTG"    , "ctg"    },
+        { ARCSIN,  "ARCSIN" , "arcsin" },
+        { ARCCOS,  "ARCCOS" , "arccos" },
+        { ARCTG ,  "ARCTG"  , "arctg"  },
+        { ARCCTG,  "ARCCTG" , "arcctg" },
+        { SH    ,  "SH"     , "sh"     },
+        { TH    ,  "TH"     , "th"     },
+        { CTH   ,  "CTH"    , "cth"    },
+        { EXP   ,  "EXP"    , "exp"    },
+        { SQRT  , "SQRT"    , "sqrt"   }
 };
 size_t sizeOfArrayWithMathOperators = sizeof( arrayWithMathOperators ) / sizeof( arrayWithMathOperators[ 0 ] );
 
 informationWithVariables arrayWithVariables[] = {
     { X, "x" },
-    { Y, "y" }
+    { Y, "y" },
+    { I, "i" },
+    { J, "j" },
+    { K, "k" },
+    { L, "l" },
+    { M, "m" },
+    { N, "n" },
+    { O, "o" },
+    { P, "p" },
+    { Q, "q" },
+    { R, "r" },
+    { S, "s" },
+    { A, "a" },
+    { B, "b" },
+    { C, "c" },
+    { Z, "z" },
+    { W, "w" },
+    { D, "d" },
+    { E, "e" },
+    { F, "f" },
+    { T, "t" },
+    { U, "u" },
+    { V, "v" },
+    { G, "g" },
+    { H, "h" }
 };
 size_t sizeOfArrayWithVariables = sizeof( arrayWithVariables ) / sizeof( arrayWithVariables[ 0 ] );
 

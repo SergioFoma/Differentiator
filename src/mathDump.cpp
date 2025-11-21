@@ -7,6 +7,34 @@
 #include "myStringFunction.h"
 #include "paint.h"
 
+informationOfMathOperations arrayWithMathOperation[] = {
+    { ADD   , " + "         },
+    { SUB   , " - "         },
+    { MUL   , " \\cdot "    },
+    { LN    , " ln "        },
+    { SIN   , " sin "       },
+    { COS   ,  " cos "      },
+    { TG    ,  " tg "       },
+    { CTG   ,  " ctg "      },
+    { ARCSIN,  " arcsin "   },
+    { ARCCOS,  " arccos "   },
+    { ARCTG ,  " arctg "    },
+    { ARCCTG,  " arcctg"    },
+    { SH    ,  " sh "       },
+    { TH    ,  " th "       },
+    { CTH   ,  " cth "      },
+};
+size_t sizeOfArrayWithMathOperation = sizeof( arrayWithMathOperation ) / sizeof( arrayWithMathOperation[ 0 ] );
+
+informationOfPrefixFunctions arrayWithPrefixFunc[] = {
+    { DIV,  printFracInLatex },
+    { SQRT, printSqrtInLatex },
+    { EXP,  printExpInLatex  },
+    { POW,  printPowInLatex  },
+    { LOG,  printLogInLatex  }
+};
+size_t sizeOfArrayWithPrefixFunc = sizeof( arrayWithPrefixFunc ) / sizeof( arrayWithPrefixFunc[ 0 ] );
+
 treeErrors dumpMathTree( tree_t* tree ){
     assert( tree );
 
@@ -84,7 +112,7 @@ operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentN
         return LOWER_IN_PRIORITY;
     }
     else{
-        return MORE_BY_PRIORITY;
+        return LOWER_IN_PRIORITY;
     }
 }
 
@@ -93,19 +121,11 @@ void viewMathFormula( FILE* fileForLatex, node_t* node ){
         return ;
     }
 
-    switch( node->data.mathOperation ){
-        case ADD:
-            fprintf( fileForLatex, " + " );
+    for( size_t mathIndex = 0; mathIndex < sizeOfArrayWithMathOperation; mathIndex++ ){
+        if( node->data.mathOperation == arrayWithMathOperation[ mathIndex ].typeOp ){
+            fprintf( fileForLatex, "%s", arrayWithMathOperation[ mathIndex ].stringMathOp );
             break;
-        case SUB:
-            fprintf( fileForLatex, " - " );
-            break;
-        case MUL:
-            fprintf( fileForLatex, " \\cdot " );
-            break;
-        default:
-            return ;
-            break;
+        }
     }
 }
 
@@ -131,7 +151,7 @@ typeOfFunctions getTypeOfDataInNode( node_t* node ){
         case ADD: case SUB: case MUL:
             return ROOT_FUNCTION;
             break;
-        case DIV:
+        case DIV: case EXP: case SQRT: case LOG: case POW:
             return PREFIX_FUNCTION;
             break;
         default:
@@ -145,19 +165,18 @@ void printPrefixBypass( FILE* fileForLatex, node_t* node ){
 
     operationComparison statusOfCompare = compareTwoMathOperator( node, node->parent );
     if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, "(" );
+        fprintf( fileForLatex, "\\left(" );
     }
 
-    switch( node->data.mathOperation ){
-        case DIV:
-            printFracInLatex( fileForLatex, node );
+    for( size_t prefixFunc = 0; prefixFunc < sizeOfArrayWithPrefixFunc; prefixFunc++ ){
+        if( node->data.mathOperation == arrayWithPrefixFunc[ prefixFunc ].typeOp ){
+            arrayWithPrefixFunc[ prefixFunc ].func( fileForLatex, node );
             break;
-        default:
-            break;
+        }
     }
 
     if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, ")" );
+        fprintf( fileForLatex, "\\right)" );
     }
 }
 
@@ -167,7 +186,7 @@ void printInOrderBypass( FILE* fileForLatex, node_t* node ){
 
     operationComparison statusOfCompare = compareTwoMathOperator( node, node->parent );
     if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, "(" );
+        fprintf( fileForLatex, "\\left(" );
     }
 
     if( node->left ){
@@ -189,7 +208,7 @@ void printInOrderBypass( FILE* fileForLatex, node_t* node ){
     }
 
     if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, ")" );
+        fprintf( fileForLatex, "\\right)" );
     }
 }
 
@@ -202,6 +221,66 @@ void printFracInLatex( FILE* fileForLatex, node_t* node ){
         printMathematicalFormulas( fileForLatex, node->left );
     }
     fprintf( fileForLatex, "}{" );
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+    fprintf( fileForLatex, "}" );
+}
+
+void printSqrtInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    fprintf( fileForLatex, "\\sqrt{" );
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+    fprintf( fileForLatex, "}{" );
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+    fprintf( fileForLatex, "}" );
+}
+
+void printExpInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    fprintf( fileForLatex, "e^{" );
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+    fprintf( fileForLatex, "}" );
+}
+
+void printLogInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    fprintf( fileForLatex, "\\log_{" );
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+    fprintf( fileForLatex, "}{" );
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+    fprintf( fileForLatex, "}" );
+}
+
+void printPowInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+
+    fprintf( fileForLatex, "^{" );
+
     if( node->right ){
         printMathematicalFormulas( fileForLatex, node->right );
     }

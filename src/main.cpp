@@ -63,21 +63,22 @@ int main(){
 
     createTreeFromFile( &tree );
 
-    dumpMathTree( &tree );
 
     //calculateTheFunctionValue( &tree );
 
     //writeInformationInFile( &tree );
 
-    tree_t differentiationTree ={};
+    //tree_t differentiationTree ={};
 
-    differentiationOfTheFunction( &tree, &differentiationTree );
+    //differentiationOfTheFunction( &tree, &differentiationTree );
 
-    dumpMathTree( &differentiationTree );
+    //dumpMathTree( &differentiationTree );
 
     dumpTree( &tree );
 
-    destroyTree( &differentiationTree );
+    dumpMathTree( &tree );
+
+    //destroyTree( &differentiationTree );
 
     destroyTree( &tree );
 
