@@ -17,7 +17,7 @@ int main(){
     /*initTree( &tree );
 
     node_t* node_1 = {};
-    typeOfDataValue.mathOperation = MUL;
+    typeOfDataValue.mathOperation = DIV;
     initNode( &node_1, OPERATOR, typeOfDataValue );
 
     node_t* node_2 = {};
@@ -33,7 +33,7 @@ int main(){
     initNode( &node_4, VARIABLE, typeOfDataValue );
 
     node_t* node_5 = {};
-    typeOfDataValue.number = 6;
+    typeOfDataValue.number = -6;
     initNode( &node_5, NUMBER, typeOfDataValue );
 
     node_t* node_6 = {};
@@ -58,9 +58,9 @@ int main(){
     node_3->right = node_5;
     node_3->parent = node_1;
     node_4->parent = node_3;
-    node_5->parent = node_3;*/
+    node_5->parent = node_3;
 
-    //writeInformationInFile( &tree );
+    writeInformationInFile( &tree );*/
 
     createTreeFromFile( &tree );
 

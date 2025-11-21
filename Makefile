@@ -34,4 +34,3 @@ makeBuild:
 	mkdir -p ./$(BUILD_DIR)/src
 clean:
 	rm -rf ./$(BUILD_DIR)
-	rm -rf ./design/*.txt

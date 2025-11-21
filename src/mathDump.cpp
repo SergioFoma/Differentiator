@@ -44,32 +44,15 @@ void printMathematicalFormulas( FILE* fileForLatex, node_t* node ){
     assert( node );
     assert( fileForLatex );
 
-    operationComparison statusOfCompare = compareTwoMathOperator( node, node->parent );
-    if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, "(" );
+    typeOfFunctions classificationOfFunction = getTypeOfDataInNode( node );
+
+    if( classificationOfFunction == ROOT_FUNCTION || classificationOfFunction == NOT_FUNCTION ){
+        printInOrderBypass( fileForLatex, node );
+    }
+    else if( classificationOfFunction == PREFIX_FUNCTION ){
+        printPrefixBypass( fileForLatex, node );
     }
 
-    if( node->left ){
-        printMathematicalFormulas( fileForLatex, node->left );
-    }
-
-    if( node->nodeValueType == NUMBER ){
-        fprintf( fileForLatex, " %lg ", node->data.number );
-    }
-    else if( node->nodeValueType == VARIABLE ){
-        fprintf( fileForLatex, " %s ", getStringOfVariable( node ) );
-    }
-    else if( node->nodeValueType == OPERATOR ){
-        viewMathFormula( fileForLatex, node );
-    }
-
-    if( node->right ){
-        printMathematicalFormulas( fileForLatex, node->right );
-    }
-
-    if( statusOfCompare == LOWER_IN_PRIORITY ){
-        fprintf( fileForLatex, ")" );
-    }
 }
 
 operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentNode ){
@@ -109,4 +92,103 @@ void viewMathFormula( FILE* fileForLatex, node_t* node ){
             return ;
             break;
     }
+}
+
+void printNumberInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    if( node->data.number < 0 ){
+        fprintf( fileForLatex, " (%lg) ", node->data.number );
+    }
+    else{
+        fprintf( fileForLatex, " %lg ", node->data.number );
+    }
+}
+
+typeOfFunctions getTypeOfDataInNode( node_t* node ){
+    assert( node );
+
+    if( node->nodeValueType != OPERATOR ){
+        return NOT_FUNCTION;
+    }
+    switch( node->data.mathOperation ){
+        case ADD: case SUB: case MUL:
+            return ROOT_FUNCTION;
+            break;
+        case DIV:
+            return PREFIX_FUNCTION;
+            break;
+        default:
+            return NOT_FUNCTION;
+    }
+}
+
+void printPrefixBypass( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    operationComparison statusOfCompare = compareTwoMathOperator( node, node->parent );
+    if( statusOfCompare == LOWER_IN_PRIORITY ){
+        fprintf( fileForLatex, "(" );
+    }
+
+    switch( node->data.mathOperation ){
+        case DIV:
+            printFracInLatex( fileForLatex, node );
+            break;
+        default:
+            break;
+    }
+
+    if( statusOfCompare == LOWER_IN_PRIORITY ){
+        fprintf( fileForLatex, ")" );
+    }
+}
+
+void printInOrderBypass( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    operationComparison statusOfCompare = compareTwoMathOperator( node, node->parent );
+    if( statusOfCompare == LOWER_IN_PRIORITY ){
+        fprintf( fileForLatex, "(" );
+    }
+
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+
+    if( node->nodeValueType == NUMBER ){
+        printNumberInLatex( fileForLatex, node );
+    }
+    else if( node->nodeValueType == VARIABLE ){
+        fprintf( fileForLatex, " %s ", getStringOfVariable( node ) );
+    }
+    else if( node->nodeValueType == OPERATOR ){
+        viewMathFormula( fileForLatex, node );
+    }
+
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+
+    if( statusOfCompare == LOWER_IN_PRIORITY ){
+        fprintf( fileForLatex, ")" );
+    }
+}
+
+void printFracInLatex( FILE* fileForLatex, node_t* node ){
+    assert( fileForLatex );
+    assert( node );
+
+    fprintf( fileForLatex, "\\frac{" );
+    if( node->left ){
+        printMathematicalFormulas( fileForLatex, node->left );
+    }
+    fprintf( fileForLatex, "}{" );
+    if( node->right ){
+        printMathematicalFormulas( fileForLatex, node->right );
+    }
+    fprintf( fileForLatex, "}" );
 }
