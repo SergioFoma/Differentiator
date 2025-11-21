@@ -1,1 +1,1 @@
-( / ( + ( 12.7 nilnil)( x nilnil))( + ( y nilnil)( -6 nilnil)))
+( * ( + ( 12.7 nilnil)( x nilnil))( + ( y nilnil)( -6 nilnil)))

@@ -5,9 +5,8 @@
 #include "tree.h"
 #include "treeDump.h"
 #include "mathDump.h"
-#include "expertSystem.h"
-#include "paint.h"
 #include "parseFileDataBase.h"
+#include "mathematicalCalculator.h"
 
 int main(){
 
@@ -64,14 +63,25 @@ int main(){
 
     createTreeFromFile( &tree );
 
-    writeInformationInFile( &tree );
+    dumpMathTree( &tree );
 
     dumpTree( &tree );
 
-    dumpMathTree( &tree );
+    //calculateTheFunctionValue( &tree );
+
+    //writeInformationInFile( &tree );
+
+    tree_t differentiationTree ={};
+
+    differentiationOfTheFunction( &tree, &differentiationTree );
+
+    dumpMathTree( &differentiationTree );
+
+    //dumpTree( &differentiationTree );
+
+    destroyTree( &differentiationTree );
 
     destroyTree( &tree );
-
 
     return 0;
 }

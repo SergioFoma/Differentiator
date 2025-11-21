@@ -15,7 +15,8 @@ enum treeErrors {
     NODE_NULL_PTR               = 1,
     NOT_ENOUGH_MEMORY           = 2,
     ERROR_OF_OPEN_FILE          = 3,
-    NOT_CORRECT_TYPE_OF_DATA    = 4
+    NOT_CORRECT_TYPE_OF_DATA    = 4,
+    ERROR_OF_GET_NAME_OF_FILE   = 5
 };
 
 enum typeOfDataInNode {

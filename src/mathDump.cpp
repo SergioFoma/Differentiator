@@ -1,14 +1,28 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "mathDump.h"
 #include "treeDump.h"
+#include "myStringFunction.h"
+#include "paint.h"
 
 treeErrors dumpMathTree( tree_t* tree ){
     assert( tree );
 
-    FILE* fileForLatex = fopen( "latexDump.tex", "w" );
+    colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will save latex dump: " );
+
+    char* nameOfFileForLatexDump = NULL;
+    size_t sizeOfAllocationMemory = 0;
+    ssize_t sizeOfLine = getlineWrapper( &nameOfFileForLatexDump, &sizeOfAllocationMemory, stdin );
+
+    if( sizeOfLine == -1 ){
+        return ERROR_OF_GET_NAME_OF_FILE;
+    }
+
+    FILE* fileForLatex = fopen( nameOfFileForLatexDump, "w" );
     if( fileForLatex == NULL ){
+        free( nameOfFileForLatexDump );
         return ERROR_OF_OPEN_FILE;
     }
 
@@ -36,6 +50,7 @@ treeErrors dumpMathTree( tree_t* tree ){
     fprintf( fileForLatex, "\\end{document}" );
 
     fclose( fileForLatex );
+    free( nameOfFileForLatexDump );
 
     return CORRECT_TREE;
 }
