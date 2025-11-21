@@ -44,12 +44,12 @@ void dumpNode( node_t* node, int rank, FILE* treeFile ){
                             ( unsigned long )node, node, node->parent, stringNodeValueType, node->data.number  );
     }
     else if( node->nodeValueType == OPERATOR ){
-        fprintf( treeFile, "\tnode%lx [shape=\"plain\"; style =\"filled\"; fillcolor =\"hotpink2\"; label = "
+        fprintf( treeFile, "\tnode%lx [shape=\"plain\"; style =\"filled\"; fillcolor =\"orange\"; label = "
                             "<<table><tr><td colspan = \"2\" > %p </td></tr> <tr><td colspan = \"2\" > parent = %p </td></tr> <tr><td width = \"100\" colspan = \"2\" > type = %s </td></tr> <tr><td width = \"100\" colspan = \"2\" > val = %s </td></tr> ",
                             ( unsigned long )node, node, node->parent, stringNodeValueType, getStringOfMathOperator( node )  );
     }
     else if( node->nodeValueType == VARIABLE){
-        fprintf( treeFile, "\tnode%lx [shape=\"plain\"; style =\"filled\"; fillcolor =\"hotpink2\"; label = "
+        fprintf( treeFile, "\tnode%lx [shape=\"plain\"; style =\"filled\"; fillcolor =\"lightskyblue2\"; label = "
                             "<<table><tr><td colspan = \"2\" > %p </td></tr> <tr><td colspan = \"2\" > parent = %p </td></tr> <tr><td width = \"100\" colspan = \"2\" > type = %s </td></tr> <tr><td width = \"100\" colspan = \"2\" > val = %d (%s) </td></tr> ",
                             ( unsigned long )node, node, node->parent, stringNodeValueType, node->data.variableInArray, getStringOfVariable( node )  );
     }

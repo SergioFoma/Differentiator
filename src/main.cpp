@@ -65,8 +65,6 @@ int main(){
 
     dumpMathTree( &tree );
 
-    dumpTree( &tree );
-
     //calculateTheFunctionValue( &tree );
 
     //writeInformationInFile( &tree );
@@ -77,7 +75,7 @@ int main(){
 
     dumpMathTree( &differentiationTree );
 
-    //dumpTree( &differentiationTree );
+    dumpTree( &tree );
 
     destroyTree( &differentiationTree );
 
