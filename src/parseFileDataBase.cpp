@@ -139,7 +139,13 @@ node_t* createNodeFromFile( char** ptrOnSymbolInPosition ){
         node_t* newNode = NULL;
         buildNewNode( &newNode, nodeName );
         newNode->left = createNodeFromFile( ptrOnSymbolInPosition );
+        if( newNode->left ){
+            newNode->left->parent = newNode;
+        }
         newNode->right = createNodeFromFile( ptrOnSymbolInPosition );
+        if( newNode->right ){
+            newNode->right->parent = newNode;
+        }
         ++(*ptrOnSymbolInPosition);
         free( nodeName );
         return newNode;

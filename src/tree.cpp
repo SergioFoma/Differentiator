@@ -58,6 +58,7 @@ treeErrors initNode( node_t** node, typeOfDataInNode typeOfData, treeElem_t elem
 
     (*node)->left = NULL;
     (*node)->right = NULL;
+    (*node)->parent = NULL;
 
     return CORRECT_TREE;
 }
@@ -107,8 +108,6 @@ void destroyNode( node_t* node ){
         return ;
     }
 
-    //printf( "\n\nnode = %p\nData = "  treeValueFormat "\nleft prt = %p\nright ptr = %p\n", node, node->data, node->left, node->right );
-
     if( node->left  ){
         destroyNode( node->left );
     }
@@ -117,7 +116,6 @@ void destroyNode( node_t* node ){
         destroyNode( node->right );
     }
 
-    //printf( "\nnode %p befor delete\n", node );
     free( node );
 }
 

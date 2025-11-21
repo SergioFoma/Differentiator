@@ -11,11 +11,11 @@
 const size_t oneStruct = 1;
 
 enum treeErrors {
-    CORRECT_TREE        = 0,
-    NODE_NULL_PTR       = 1,
-    NOT_ENOUGH_MEMORY   = 2,
-    ERROR_OF_OPEN_FILE  = 3,
-    NOT_CORRECT_TYPE_OF_DATA =4
+    CORRECT_TREE                = 0,
+    NODE_NULL_PTR               = 1,
+    NOT_ENOUGH_MEMORY           = 2,
+    ERROR_OF_OPEN_FILE          = 3,
+    NOT_CORRECT_TYPE_OF_DATA    = 4
 };
 
 enum typeOfDataInNode {
@@ -49,6 +49,7 @@ struct node_t {
     treeElem_t data;
     node_t* left;
     node_t* right;
+    node_t* parent;
 };
 
 struct tree_t{

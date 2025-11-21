@@ -4,6 +4,7 @@
 
 #include "tree.h"
 #include "treeDump.h"
+#include "mathDump.h"
 #include "expertSystem.h"
 #include "paint.h"
 #include "parseFileDataBase.h"
@@ -35,17 +36,39 @@ int main(){
     typeOfDataValue.number = 6;
     initNode( &node_5, NUMBER, typeOfDataValue );
 
+    node_t* node_6 = {};
+    typeOfDataValue.mathOperation = ADD;
+    initNode( &node_6, OPERATOR, typeOfDataValue );
+
+    node_t* node_7 = {};
+    typeOfDataValue.number = 12.7;
+    initNode( &node_7, NUMBER, typeOfDataValue );
+
+
     (tree.rootTree)->left = node_1;
-    node_1->left = node_2;
+    node_1->left = node_6;
     node_1->right = node_3;
+    node_1->parent = tree.rootTree;
+    node_6->parent = node_1;
+    node_6->left = node_7;
+    node_6->right = node_2;
+    node_2->parent = node_6;
+    node_7->parent = node_6;
     node_3->left = node_4;
     node_3->right = node_5;
+    node_3->parent = node_1;
+    node_4->parent = node_3;
+    node_5->parent = node_3;*/
 
-    writeInformationInFile( &tree );*/
+    //writeInformationInFile( &tree );
 
     createTreeFromFile( &tree );
 
+    writeInformationInFile( &tree );
+
     dumpTree( &tree );
+
+    dumpMathTree( &tree );
 
     destroyTree( &tree );
 
