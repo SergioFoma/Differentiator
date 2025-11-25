@@ -3,74 +3,13 @@
 #include <stdlib.h>
 
 #include "treeDump.h"
+#include "globals.h"
 
 static int firstRank = 1;
 
 static void dumpTheSortedNodeInFile( const node_t* node, FILE* fileForWrite );
 
 static void dumpTheSortedTreeInFile( const tree_t* tree, FILE* fileForWrite );
-
-informationWithValueType arrayWithValueType[] = {
-        { NUMBER, "NUMBER"},
-        { VARIABLE, "VARIABLE"},
-        { OPERATOR, "OPERATOR"}
-};
-size_t sizeOfArrayWithValueType = sizeof( arrayWithValueType ) / sizeof( arrayWithValueType[ 0 ] );
-
-informationWithMathOperators arrayWithMathOperators[] = {
-        { ADD   , "ADD"     , "+"      },
-        { SUB   , "SUB"     , "-"      },
-        { MUL   , "MUL"     , "*"      },
-        { DIV   , "DIV"     , "/"      },
-        { LN    , "LN"      , "ln"     },
-        { LOG   , "LOG"     , "log"    },
-        { POW   , "POW"     , "^"      },
-        { SIN   , "SIN"     , "sin"    },
-        { COS   ,  "COS"    , "cos"    },
-        { TG    ,  "TG"     , "tg"     },
-        { CTG   ,  "CTG"    , "ctg"    },
-        { ARCSIN,  "ARCSIN" , "arcsin" },
-        { ARCCOS,  "ARCCOS" , "arccos" },
-        { ARCTG ,  "ARCTG"  , "arctg"  },
-        { ARCCTG,  "ARCCTG" , "arcctg" },
-        { SH    ,  "SH"     , "sh"     },
-        { TH    ,  "TH"     , "th"     },
-        { CTH   ,  "CTH"    , "cth"    },
-        { EXP   ,  "EXP"    , "exp"    },
-        { SQRT  , "SQRT"    , "sqrt"   }
-};
-size_t sizeOfArrayWithMathOperators = sizeof( arrayWithMathOperators ) / sizeof( arrayWithMathOperators[ 0 ] );
-
-informationWithVariables arrayWithVariables[] = {
-    { X, "x" },
-    { Y, "y" },
-    { I, "i" },
-    { J, "j" },
-    { K, "k" },
-    { L, "l" },
-    { M, "m" },
-    { N, "n" },
-    { O, "o" },
-    { P, "p" },
-    { Q, "q" },
-    { R, "r" },
-    { S, "s" },
-    { A, "a" },
-    { B, "b" },
-    { C, "c" },
-    { Z, "z" },
-    { W, "w" },
-    { D, "d" },
-    { E, "e" },
-    { F, "f" },
-    { T, "t" },
-    { U, "u" },
-    { V, "v" },
-    { G, "g" },
-    { H, "h" }
-};
-size_t sizeOfArrayWithVariables = sizeof( arrayWithVariables ) / sizeof( arrayWithVariables[ 0 ] );
-
 
 void dumpNode( node_t* node, int rank, FILE* treeFile ){
     assert( node );
@@ -270,9 +209,9 @@ const char* getStringOfMathOperator( const node_t* node ){
         return NULL;
     }
 
-    for( size_t mathIndex = 0; mathIndex < sizeOfArrayWithMathOperators; mathIndex++ ){
-        if( node->data.mathOperation == arrayWithMathOperators[ mathIndex ].mathOperation ){
-            return arrayWithMathOperators[ mathIndex ].nameOfMathOperation;
+    for( size_t mathIndex = 0; mathIndex < sizeOfMathArray; mathIndex++ ){
+        if( node->data.mathOperation == arrayWithMathInfo[ mathIndex ].mathOperation ){
+            return arrayWithMathInfo[ mathIndex ].nameOfMathOperation;
         }
     }
 
@@ -298,9 +237,9 @@ const char* getViewOfMathOperation( const node_t* node ){
         return NULL;
     }
 
-    for( size_t mathIndex = 0; mathIndex < sizeOfArrayWithMathOperators; mathIndex++ ){
-        if( node->data.mathOperation ==  arrayWithMathOperators[ mathIndex ].mathOperation ){
-            return arrayWithMathOperators[ mathIndex ].viewOfMathOperation;
+    for( size_t mathIndex = 0; mathIndex < sizeOfMathArray; mathIndex++ ){
+        if( node->data.mathOperation ==  arrayWithMathInfo[ mathIndex ].mathOperation ){
+            return arrayWithMathInfo[ mathIndex ].viewOfMathOperationInFile;
         }
     }
 

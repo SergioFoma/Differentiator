@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -10,15 +9,7 @@
 #include "treeDump.h"
 #include "myStringFunction.h"
 #include "paint.h"
-
-extern informationWithValueType arrayWithValueType[];
-extern size_t sizeOfArrayWithValueType;
-
-extern informationWithMathOperators arrayWithMathOperators[];
-extern size_t sizeOfArrayWithMathOperators;
-
-extern informationWithVariables arrayWithVariables[];
-extern size_t sizeOfArrayWithVariables;
+#include "globals.h"
 
 expertSystemErrors writeInformationInFile( tree_t* tree ){
     if( tree == NULL ){
@@ -133,7 +124,7 @@ node_t* createNodeFromFile( char** ptrOnSymbolInPosition ){
         return NULL;
     }
 
-    if( *(*ptrOnSymbolInPosition) == '(' ){
+    if( **ptrOnSymbolInPosition == '(' ){
         ++(*ptrOnSymbolInPosition);
         char* nodeName = readNodeNameFromFile( ptrOnSymbolInPosition );
         node_t* newNode = NULL;
@@ -194,9 +185,9 @@ expertSystemErrors buildNewNode( node_t** node, char* nodeName ){
 
     treeElem_t data = {};
 
-    for( size_t mathIndex = 0; mathIndex < sizeOfArrayWithMathOperators; mathIndex++ ){
-        if( strcmp( nodeName, arrayWithMathOperators[ mathIndex ].viewOfMathOperation) == 0){
-            data.mathOperation = arrayWithMathOperators[ mathIndex ].mathOperation;
+    for( size_t mathIndex = 0; mathIndex < sizeOfMathArray; mathIndex++ ){
+        if( strcmp( nodeName, arrayWithMathInfo[ mathIndex ].viewOfMathOperationInFile ) == 0){
+            data.mathOperation = arrayWithMathInfo[ mathIndex ].mathOperation;
             initNode( node, OPERATOR, data );
             return CORRECT_WORK;
         }

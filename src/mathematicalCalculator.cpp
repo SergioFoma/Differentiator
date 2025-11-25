@@ -5,24 +5,14 @@
 #include "mathematicalCalculator.h"
 #include "paint.h"
 #include "myStringFunction.h"
-
-#define MUL_( leftNode, rightNode ) newNode( OPERATOR, MUL, leftNode, rightNode )
-#define ADD_( leftNode, rightNode ) newNode( OPERATOR, ADD, leftNode, rightNode )
+#include "globals.h"
 
 const double epsilon = 1e-5;
 
-const size_t sizeOfArrayWithVariable = 2;
+const size_t sizeOfArrayWithVariable = 24;
 double arrayWithVariableValue[ sizeOfArrayWithVariable] = {};
 
-mathsOperators arrayWithMathFunctions[] = {
-    { ADD, addNumbers },
-    { SUB, subNumbers },
-    { MUL, mulNumbers },
-    { DIV, divNumbers }
-};
-size_t sizeOfArrayWithMathFunctions = sizeof( arrayWithMathFunctions ) / sizeof( arrayWithMathFunctions[ 0 ] );
-
-mathErrors calculateTheFunctionValue( tree_t* tree ){
+/*mathErrors calculateTheFunctionValue( tree_t* tree ){
     if( tree == NULL ){
         return NULL_PTR;
     }
@@ -70,25 +60,7 @@ double doMathOperations( node_t* node, double firstNumber, double secondNumber )
     return 0;
 }
 
-double addNumbers( double firstNumber, double secondNumber ){
-    return firstNumber + secondNumber;
-}
-
-double subNumbers( double firstNumber, double secondNumber ){
-    return firstNumber - secondNumber;
-}
-
-double mulNumbers( double firstNumber, double secondNumber ){
-    return firstNumber * secondNumber;
-}
-
-double divNumbers( double firstNumber, double secondNumber ){
-    if( fabs( secondNumber - 0 ) > epsilon ){
-        return firstNumber / secondNumber;
-    }
-
-    return 0;
-}
+*/
 
 mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTree ){
     if( tree == NULL ){
@@ -122,26 +94,13 @@ node_t* differentiation( const node_t* node, variablesAndTheyIndex variable ){
         return nodeAfterDifferentiation;
     }
 
-    switch( node->data.mathOperation ){
-        case ADD:
-            return ADD_( differentiation( node->left, variable ),
-                         differentiation( node->right, variable )
-                       );
-            break;
-        case MUL:
-            return ADD_(MUL_( differentiation( node->left, variable ),
-                              copyNode( node->right )
-                            ),
-                        MUL_( copyNode( node->left ),
-                              differentiation( node->right, variable )
-                            )
-                        );
-            break;
-        default:
-            return NULL;
-            break;
-    }
 
+
+    for( size_t diffIndex = 0; diffIndex < sizeOfMathArray; diffIndex++ ){
+        if( node->data.mathOperation == arrayWithMathInfo[ diffIndex ].mathOperation ){
+            return arrayWithMathInfo[ diffIndex ].differentiationFunc( node, variable );
+        }
+    }
 }
 
 node_t* copyNode( node_t* node ){
@@ -164,10 +123,15 @@ node_t* copyNode( node_t* node ){
     return newNode;
 }
 
+node_t* makeConstNode( double value ){
+    node_t* newNode = NULL;
+    treeElem_t data = {};
+    data.number = value;
+    initNode( &newNode, NUMBER, data );
+    return newNode;
+}
+
 node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, node_t* leftNode, node_t* rightNode ){
-    if( leftNode == NULL || rightNode == NULL ){
-        return NULL;
-    }
 
     node_t* newNode = NULL;
     treeElem_t data = {};
@@ -176,8 +140,12 @@ node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, no
     initNode( &newNode, nodeType, data );
     newNode->left = leftNode;
     newNode->right = rightNode;
-    newNode->left->parent = newNode;
-    newNode->right->parent = newNode;
+    if( newNode->left ){
+        newNode->left->parent = newNode;
+    }
+    if( newNode->right ){
+        newNode->right->parent = newNode;
+    }
 
     return newNode;
 }

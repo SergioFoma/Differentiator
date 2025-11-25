@@ -3,22 +3,6 @@
 
 #include "tree.h"
 
-struct informationWithValueType {
-    typeOfDataInNode typeOfData;
-    const char* nameOfType;
-};
-
-struct informationWithMathOperators {
-    typeOfMathOperation mathOperation;
-    const char* nameOfMathOperation;
-    const char* viewOfMathOperation;
-};
-
-struct informationWithVariables {
-    variablesAndTheyIndex variable;
-    const char* nameOfVariable;
-};
-
 void dumpNode( node_t* node, int rank, FILE* treeFile );
 
 const char* getStringOfValueType( const node_t* node );
