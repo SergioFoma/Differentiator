@@ -90,7 +90,8 @@ operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentN
              ( parentNode->data.mathOperation == LOG || parentNode->data.mathOperation == LN ||
                parentNode->data.mathOperation == POW || parentNode->data.mathOperation == SIN ||
                parentNode->data.mathOperation == COS || parentNode->data.mathOperation == TG ||
-               parentNode->data.mathOperation == CTG   ) ){
+               parentNode->data.mathOperation == CTG || parentNode->data.mathOperation == SH ||
+               parentNode->data.mathOperation == CH   ) ){
 
                return LOWER_IN_PRIORITY;
     }

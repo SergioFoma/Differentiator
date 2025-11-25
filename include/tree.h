@@ -45,9 +45,10 @@ enum typeOfMathOperation {
     ARCTG   = 14,
     ARCCTG  = 15,
     SH      = 16,
-    TH      = 17,
-    CTH     = 18,
-    EXP     = 19
+    CH      = 17,
+    TH      = 18,
+    CTH     = 19,
+    EXP     = 20
 };
 
 enum variablesAndTheyIndex {

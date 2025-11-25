@@ -1,1 +1,2 @@
-( arctg ( 5 nilnil)( ln nil( - ( tg nil( x nilnil))( 17 nilnil))))
+( ^ ( x nilnil)( x nilnil))
+

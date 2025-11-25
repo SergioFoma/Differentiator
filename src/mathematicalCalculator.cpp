@@ -16,13 +16,14 @@ double arrayWithVariableValue[ sizeOfArrayWithVariable] = {};
 #define SUB_( leftNode, rightNode ) newNode( OPERATOR, SUB, leftNode, rightNode )
 #define MUL_( leftNode, rightNode ) newNode( OPERATOR, MUL, leftNode, rightNode )
 #define DIV_( leftNode, rightNode ) newNode( OPERATOR, DIV, leftNode, rightNode )
-
-
 #define COS_( rightNode ) newNode( OPERATOR, COS, NULL, rightNode )
 #define SIN_( rightNode ) newNode( OPERATOR, SIN, NULL, rightNode )
 #define LN_( rightNode ) newNode( OPERATOR, LN, NULL, rightNode )
 #define POW_( leftNode, rightNode ) newNode( OPERATOR, POW, leftNode, rightNode )
 #define SQRT_( rightNode ) newNode( OPERATOR, SQRT, NULL, rightNode )
+#define CH_( rightNode ) newNode( OPERATOR, CH, NULL, rightNode )
+#define SH_( rightNode ) newNode( OPERATOR, SH, NULL, rightNode )
+#define EXP_( rightNode ) newNode( OPERATOR, EXP, NULL, rightNode )
 
 /*mathErrors calculateTheFunctionValue( tree_t* tree ){
     if( tree == NULL ){
@@ -293,4 +294,135 @@ node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable
                             )
                      )
                 );
+}
+
+node_t* differentiationArcctg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( MUL_( makeConstNode( -1 ),
+                       differentiation( node->right, variable )
+                    ),
+                 ADD_( makeConstNode( 1 ),
+                       POW_( copyNode( node->right ),
+                             makeConstNode( 2 )
+                            )
+                    )
+                );
+}
+
+node_t* differentiationSh( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return MUL_( CH_( copyNode( node->right )),
+                 differentiation( node->right, variable )
+                );
+}
+
+node_t* differentiationCh( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return MUL_( SH_( copyNode( node->right ) ),
+                 differentiation( node->right, variable )
+                );
+}
+
+node_t* differentiationTh( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 POW_( CH_( copyNode( node->right ) ),
+                        makeConstNode( 2 )
+                     )
+                );
+}
+
+node_t* differentiationCth( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( MUL_( makeConstNode( -1 ),
+                       differentiation( node->right, variable )
+                     ),
+                POW_( SH_( copyNode( node->right ) ),
+                      makeConstNode( 2 )
+                    )
+                );
+}
+
+node_t* differentiationExp( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return MUL_( EXP_( copyNode( node->right ) ),
+                 differentiation( node->right, variable )
+                );
+}
+
+node_t* differentiationSqrt( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                MUL_( makeConstNode( 2 ),
+                     SQRT_( copyNode( node->right ) )
+                    )
+                );
+}
+
+node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable ){
+    assert( node );
+
+    statusOfFind leftSearching = variableSearching( node->left, variable );
+    statusOfFind rightSearching = variableSearching( node->right, variable );
+
+    if( leftSearching == DETECTED_VAR && rightSearching == NOT_DETECTED_VAR ){
+        return MUL_( makeConstNode( node->right->data.number ),
+                     MUL_( POW_( copyNode( node->left ),
+                                 makeConstNode( node->right->data.number - 1 )
+                                ),
+                           differentiation( node->left, variable )
+                        )
+                    );
+    }
+
+    if( leftSearching == NOT_DETECTED_VAR && rightSearching == DETECTED_VAR ){
+        return MUL_( POW_( makeConstNode( node->left->data.number ),
+                           copyNode( node->right )
+                         ),
+                     MUL_( differentiation( node->right, variable ),
+                           LN_( makeConstNode( node->left->data.number ) )
+                         )
+                    );
+    }
+
+    if( leftSearching == DETECTED_VAR && rightSearching == DETECTED_VAR ){
+        node_t*  degreeNode = MUL_( copyNode( node->right ),
+                                   LN_( copyNode( node->left ) )
+                                 );
+
+        return MUL_( EXP_( degreeNode ),
+                     differentiationMul( degreeNode, variable )
+                    );
+    }
+
+    return NULL;
+}
+
+statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variable ){
+    if( node == NULL ){
+        return ERROR_OF_FIND_VAR;
+    }
+
+    if( node->nodeValueType == VARIABLE && node->data.variableInArray == variable ){
+        return DETECTED_VAR;
+    }
+
+    statusOfFind leftSearching = variableSearching( node->left, variable );
+    statusOfFind rightSearching = variableSearching( node->right, variable );
+
+    if( leftSearching == DETECTED_VAR ){
+        return leftSearching;
+    }
+    if( rightSearching == DETECTED_VAR ){
+        return rightSearching;
+    }
+
+    return NOT_DETECTED_VAR;
 }

@@ -12,7 +12,7 @@ informationWithMathOperators arrayWithMathInfo[] = {
     { DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doAdd   , differentiationDiv    },
     { LN    , "LN"      , "ln"      , printFunctionOfOneArguments   , "ln"          ,   doAdd   , differentiationLn     },
     { LOG   , "LOG"     , "log"     , printFunctionOfTwoArguments   , "\\log_{"     ,   doAdd   , differentiationLog    },
-    { POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationAdd    },
+    { POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    },
     { SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin "        ,   doAdd   , differentiationSin    },
     { COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos "        ,   doAdd   , differentiationCos    },
     { TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg "         ,   doAdd   , differentiationTg     },
@@ -20,12 +20,13 @@ informationWithMathOperators arrayWithMathInfo[] = {
     { ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin "     ,   doAdd   , differentiationArcsin },
     { ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos "     ,   doAdd   , differentiationArccos },
     { ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg "      ,   doAdd   , differentiationArctg  },
-    { ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationAdd    },
-    { SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationAdd    },
-    { TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationAdd    },
-    { CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationAdd    },
-    { EXP   , "EXP"     , "exp"     , printFunctionWithOneStaples   , "e^{"         ,   doAdd   , differentiationAdd    },
-    { SQRT  , "SQRT"    , "sqrt"    , printFunctionWithOneStaples   , "\\sqrt{"     ,   doAdd   , differentiationAdd    }
+    { ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationArcctg },
+    { SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationSh     },
+    { CH    , "CH"      , "ch"      , printFunctionOfOneArguments   , "ch "         ,   doAdd   , differentiationCh     },
+    { TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationTh     },
+    { CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationCth    },
+    { EXP   , "EXP"     , "exp"     , printFunctionWithOneStaples   , "e^{"         ,   doAdd   , differentiationExp    },
+    { SQRT  , "SQRT"    , "sqrt"    , printFunctionWithOneStaples   , "\\sqrt{"     ,   doAdd   , differentiationSqrt   }
 };
 const size_t sizeOfMathArray = sizeof( arrayWithMathInfo ) / sizeof( arrayWithMathInfo[ 0 ] );
 

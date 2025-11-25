@@ -3,10 +3,16 @@
 
 #include "tree.h"
 
-enum mathErrors{
+enum mathErrors {
     CORRECT_CALCULATE           = 0,
     CORRECT_DIFFERENTIATION     = 1,
     NULL_PTR                    = 2
+};
+
+enum statusOfFind {
+    DETECTED_VAR        = 0,
+    NOT_DETECTED_VAR    = 1,
+    ERROR_OF_FIND_VAR   = 2
 };
 
 mathErrors calculateTheFunctionValue( tree_t* tree );
@@ -39,7 +45,16 @@ node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationArcsin( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationArcctg( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationSh( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationCh( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationTh( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationCth( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationExp( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationSqrt( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable );
 
+statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variable );
 
 
 double doAdd( double firstNumber, double secondNumber );
