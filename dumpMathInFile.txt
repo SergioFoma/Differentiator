@@ -1,1 +1,1 @@
-( cos nil( * ( 2 nilnil)( sin nil( + ( * ( 5 nilnil)( x nilnil))( 17 nilnil)))))
+( ctg nil( + ( * ( 17 nilnil)( x nilnil))( cos nil( x nilnil))))

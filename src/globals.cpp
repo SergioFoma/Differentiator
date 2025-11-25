@@ -26,8 +26,8 @@ informationWithMathOperators arrayWithMathInfo[] = {
     { POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationAdd    },
     { SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin"         ,   doAdd   , differentiationSin    },
     { COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos"         ,   doAdd   , differentiationCos    },
-    { TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg"          ,   doAdd   , differentiationAdd    },
-    { CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg"         ,   doAdd   , differentiationAdd    },
+    { TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg"          ,   doAdd   , differentiationTg    },
+    { CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg"         ,   doAdd   , differentiationCtg    },
     { ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin"      ,   doAdd   , differentiationAdd    },
     { ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos"      ,   doAdd   , differentiationAdd    },
     { ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg"       ,   doAdd   , differentiationAdd    },
@@ -262,11 +262,35 @@ node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable){
 
     return MUL_( COS_( copyNode( node->right ) ), differentiation( node->right, variable) ) ;
 }
+
 node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return MUL_( makeConstNode( -1 ), MUL_( SIN_( copyNode( node->right ) ), differentiation( node->right, variable ) ) );
 }
+
+node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 POW_( COS_( copyNode( node->right ) ),
+                       makeConstNode( 2 )
+                     )
+                );
+}
+
+node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( MUL_( makeConstNode( -1 ),
+                       differentiation( node->right, variable )
+                     ),
+                 POW_( SIN_( copyNode( node->right ) ),
+                       makeConstNode( 2 )
+                     )
+                );
+}
+
 
 double doAdd( double firstNumber, double secondNumber ){
     return firstNumber + secondNumber;

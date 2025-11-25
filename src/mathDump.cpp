@@ -89,8 +89,16 @@ operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentN
     else if( (currentNode->data.mathOperation == MUL || currentNode->data.mathOperation == DIV ) &&
              ( parentNode->data.mathOperation == LOG || parentNode->data.mathOperation == LN ||
                parentNode->data.mathOperation == POW || parentNode->data.mathOperation == SIN ||
-               parentNode->data.mathOperation == COS   ) ){
-        return LOWER_IN_PRIORITY;
+               parentNode->data.mathOperation == COS || parentNode->data.mathOperation == TG ||
+               parentNode->data.mathOperation == CTG   ) ){
+
+               return LOWER_IN_PRIORITY;
+    }
+    else if( ( currentNode->data.mathOperation == SIN || currentNode->data.mathOperation == COS ||
+               currentNode->data.mathOperation == TG ||  currentNode->data.mathOperation == CTG ) &&
+               parentNode->data.mathOperation == POW ){
+
+                return LOWER_IN_PRIORITY;
     }
     else{
         return MORE_BY_PRIORITY;

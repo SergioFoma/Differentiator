@@ -19,6 +19,8 @@ node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable);
 
 double doAdd( double firstNumber, double secondNumber );
 /*
