@@ -1,1 +1,1 @@
-( ctg nil( + ( * ( 17 nilnil)( x nilnil))( cos nil( x nilnil))))
+( arctg ( 5 nilnil)( ln nil( - ( tg nil( x nilnil))( 17 nilnil))))

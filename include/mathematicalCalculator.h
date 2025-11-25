@@ -26,5 +26,22 @@ node_t* makeConstNode( double value );
 
 node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, node_t* leftNode, node_t* rightNode );
 
+node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationArcsin( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variable);
+node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable);
+
+
+
+double doAdd( double firstNumber, double secondNumber );
 
 #endif

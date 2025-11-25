@@ -12,6 +12,18 @@ const double epsilon = 1e-5;
 const size_t sizeOfArrayWithVariable = 24;
 double arrayWithVariableValue[ sizeOfArrayWithVariable] = {};
 
+#define ADD_( leftNode, rightNode ) newNode( OPERATOR, ADD, leftNode, rightNode )
+#define SUB_( leftNode, rightNode ) newNode( OPERATOR, SUB, leftNode, rightNode )
+#define MUL_( leftNode, rightNode ) newNode( OPERATOR, MUL, leftNode, rightNode )
+#define DIV_( leftNode, rightNode ) newNode( OPERATOR, DIV, leftNode, rightNode )
+
+
+#define COS_( rightNode ) newNode( OPERATOR, COS, NULL, rightNode )
+#define SIN_( rightNode ) newNode( OPERATOR, SIN, NULL, rightNode )
+#define LN_( rightNode ) newNode( OPERATOR, LN, NULL, rightNode )
+#define POW_( leftNode, rightNode ) newNode( OPERATOR, POW, leftNode, rightNode )
+#define SQRT_( rightNode ) newNode( OPERATOR, SQRT, NULL, rightNode )
+
 /*mathErrors calculateTheFunctionValue( tree_t* tree ){
     if( tree == NULL ){
         return NULL_PTR;
@@ -58,9 +70,12 @@ double doMathOperations( node_t* node, double firstNumber, double secondNumber )
     }
 
     return 0;
+}*/
+
+double doAdd( double firstNumber, double secondNumber ){
+    return firstNumber + secondNumber;
 }
 
-*/
 
 mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTree ){
     if( tree == NULL ){
@@ -148,4 +163,134 @@ node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, no
     }
 
     return newNode;
+}
+
+node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return ADD_( differentiation( node->left, variable ),
+                 differentiation( node->right, variable )
+                );
+}
+
+node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return SUB_( differentiation( node->left, variable ),
+                 differentiation( node->right, variable )
+                );
+}
+
+node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return ADD_(MUL_( differentiation( node->left, variable ),
+                      copyNode( node->right )
+                    ),
+                MUL_( copyNode( node->left ),
+                      differentiation( node->right, variable )
+                    )
+                );
+}
+
+node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+    return DIV_(
+                SUB_(
+                    MUL_( differentiation( node->left, variable ),
+                          copyNode( node->right )
+                        ),
+                    MUL_( copyNode( node->left ),
+                          differentiation( node->right, variable )
+                        )
+                    ),
+                POW_( copyNode( node->right ),
+                      makeConstNode( 2 )
+                    )
+                );
+}
+
+node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ), copyNode( node->right ) );
+}
+
+node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 MUL_( copyNode( node->right ), LN_( copyNode( node->left) ) )
+                );
+}
+
+node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return MUL_( COS_( copyNode( node->right ) ), differentiation( node->right, variable) ) ;
+}
+
+node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return MUL_( makeConstNode( -1 ), MUL_( SIN_( copyNode( node->right ) ), differentiation( node->right, variable ) ) );
+}
+
+node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 POW_( COS_( copyNode( node->right ) ),
+                       makeConstNode( 2 )
+                     )
+                );
+}
+
+node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( MUL_( makeConstNode( -1 ),
+                       differentiation( node->right, variable )
+                     ),
+                 POW_( SIN_( copyNode( node->right ) ),
+                       makeConstNode( 2 )
+                     )
+                );
+}
+
+node_t* differentiationArcsin( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 SQRT_( SUB_( makeConstNode( 1 ),
+                              POW_( copyNode( node->right ), makeConstNode( 2 ) )
+                            )
+                      )
+                );
+
+}
+
+node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return  DIV_( MUL_( makeConstNode( -1 ),
+                        differentiation( node->right, variable )
+                      ),
+                  SQRT_( SUB_( makeConstNode( 1 ),
+                                POW_( copyNode( node->right ), makeConstNode( 2 ) )
+                             )
+                        )
+                );
+}
+
+node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable){
+    assert( node );
+
+    return DIV_( differentiation( node->right, variable ),
+                 ADD_( makeConstNode( 1 ),
+                       POW_( copyNode( node->right ),
+                             makeConstNode( 2 )
+                            )
+                     )
+                );
 }

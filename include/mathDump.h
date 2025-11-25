@@ -17,4 +17,10 @@ void printNumberInLatex( FILE* fileForLatex, node_t* node );
 
 operationComparison compareTwoMathOperator( node_t* currentNode, node_t* parentNode );
 
+void printMathFunction( FILE* fileForLatex, node_t* node );
+void printCenterFunctionInLatex( FILE* fileForLatex, node_t* node );
+void printFunctionOfTwoArguments( FILE* fileForLatex, node_t* node );
+void printFunctionOfOneArguments( FILE* fileForLatex, node_t* node );
+void printFunctionWithOneStaples( FILE* fileForLatex, node_t* node );
+
 #endif

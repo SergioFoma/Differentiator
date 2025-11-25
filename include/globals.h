@@ -5,24 +5,6 @@
 
 #include "tree.h"
 
-void printMathFunction( FILE* fileForLatex, node_t* node );
-void printCenterFunctionInLatex( FILE* fileForLatex, node_t* node );
-void printFunctionOfTwoArguments( FILE* fileForLatex, node_t* node );
-void printFunctionOfOneArguments( FILE* fileForLatex, node_t* node );
-void printFunctionWithOneStaples( FILE* fileForLatex, node_t* node );
-
-node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable);
-node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable);
-
-double doAdd( double firstNumber, double secondNumber );
 /*
 double doSub( double firstNumber, double secondNumber );
 double doMul( double firstNumber, double secondNumber );
