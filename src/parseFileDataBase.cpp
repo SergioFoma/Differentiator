@@ -207,3 +207,140 @@ expertSystemErrors buildNewNode( node_t** node, char* nodeName ){
     return CORRECT_WORK;
 }
 
+double createTreeByRecursiveDescent( ){
+    colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will find mathematical statement: " );
+
+    char* nameOfFileForMathStatement = NULL;
+    size_t sizeOfAllocationMemory = 0;
+    ssize_t sizeOfLine = getlineWrapper( &nameOfFileForMathStatement, &sizeOfAllocationMemory, stdin );
+
+    if( sizeOfLine == -1 ){
+        return -1;
+    }
+
+    FILE* fileForMathStatement = fopen( nameOfFileForMathStatement, "r" );
+    if( fileForMathStatement == NULL ){
+        colorPrintf( NOMODE, RED, "\ncan not open file:%s %s %d\n", __FILE__, __func__, __LINE__ );
+        free( nameOfFileForMathStatement );
+        return -1;
+    }
+
+    bufferInformation dataBaseFromFile = {};
+    errorCode statusOfReadFromFile = initBufferInformation( &dataBaseFromFile, fileForMathStatement, nameOfFileForMathStatement);
+    if( statusOfReadFromFile != correct ){
+        return -1;
+    }
+
+    char* ptrOnSymbolInPosition = dataBaseFromFile.buffer;
+    double value = getGeneral( &ptrOnSymbolInPosition );
+
+    free( nameOfFileForMathStatement );
+    fclose( fileForMathStatement );
+    destroyBufferInformation( &dataBaseFromFile );
+    return value;
+}
+
+double getGeneral( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    double value = getExpression( ptrOnSymbolInPosition );
+
+    if( **ptrOnSymbolInPosition != '$' ){
+        colorPrintf( NOMODE, RED, "\nError of getGeneral:%s %s %d\n", __FILE__, __func__, __LINE__ );
+        exit( 0 );
+    }
+
+    ++(*ptrOnSymbolInPosition);
+    return value;
+}
+
+double getTerm( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    double value = getPrimaryExpression( ptrOnSymbolInPosition );
+
+    while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
+        char operation = **ptrOnSymbolInPosition;
+        ++(*ptrOnSymbolInPosition);
+
+        double secondValue = getPrimaryExpression( ptrOnSymbolInPosition );
+
+        if( operation == '*' ){
+            value *= secondValue;
+        }
+        else if( operation == '/' && secondValue != 0 ){
+            value /= secondValue;
+        }
+    }
+
+    return value;
+}
+
+double getExpression( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    double value = getTerm( ptrOnSymbolInPosition );
+
+    while( **ptrOnSymbolInPosition == '+' || **ptrOnSymbolInPosition == '-' ){
+        char operation = **ptrOnSymbolInPosition;
+        ++(*ptrOnSymbolInPosition);
+
+        double secondValue = getTerm( ptrOnSymbolInPosition );
+
+        if( operation == '+' ){
+            value += secondValue;
+        }
+        else{
+            value -= secondValue;
+        }
+    }
+
+    return value;
+
+}
+
+double getPrimaryExpression( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    if( **ptrOnSymbolInPosition == '(' ){
+        ++(*ptrOnSymbolInPosition);
+
+        double value = getExpression( ptrOnSymbolInPosition );
+
+        if( **ptrOnSymbolInPosition == ')' ){
+            ++(*ptrOnSymbolInPosition);
+        }
+        return value;
+    }
+    else{
+        return getNumber( ptrOnSymbolInPosition );
+    }
+
+}
+
+double getNumber( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    double value = 0;
+    bool statusOfReadNumber = false;
+
+    while( '0' <= (**ptrOnSymbolInPosition) &&
+                  (**ptrOnSymbolInPosition) <= '9' ){
+
+        value = value * 10 + ( (**ptrOnSymbolInPosition) - '0' );
+        ++(*ptrOnSymbolInPosition);
+        statusOfReadNumber = true;
+    }
+
+    if( statusOfReadNumber == false ){
+        colorPrintf( NOMODE, RED, "\nError of getNumber:%s %s %d\n", __FILE__, __func__, __LINE__ );
+        exit( 0 );
+    }
+
+    return value;
+}

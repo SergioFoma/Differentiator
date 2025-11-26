@@ -10,7 +10,7 @@
 
 int main(){
 
-    tree_t tree = {};
+    /*tree_t tree = {};
 
     char* nameOfFileForLatex = askInformationAboutMathDump();
     FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
@@ -30,7 +30,11 @@ int main(){
 
     destroyTree( &differentiationTree );
 
-    destroyTree( &tree );
+    destroyTree( &tree );*/
+
+    double result = createTreeByRecursiveDescent();
+
+    printf( "result = %lg\n", result );
 
     return 0;
 }

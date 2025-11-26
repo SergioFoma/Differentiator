@@ -461,7 +461,6 @@ void optimisationConsts( node_t* node ){
         return ;
     }
 
-
     if( node->left ){
         optimisationConsts( node->left );
     }
@@ -488,5 +487,39 @@ void optimisationConsts( node_t* node ){
             }
         }
     }
-
 }
+
+void removingNeutralElements( tree_t* treeForOptimisation ){
+    assert( treeForOptimisation );
+
+    optimisationNeutralElem( treeForOptimisation->rootTree );
+}
+
+void optimisationNeutralElem( node_t* node ){
+    assert( node );
+
+    if( node->nodeValueType == NUMBER || node->nodeValueType == VARIABLE ){
+        return ;
+    }
+
+    if( node->left ){
+        optimisationNeutralElem( node->left );
+    }
+    if( node->right ){
+        optimisationNeutralElem( node->right );
+    }
+
+    if( node->data.mathOperation == MUL && node->left->nodeValueType == NUMBER &&
+        fabs( node->left->data.number ) < epsilon ){
+
+        node->nodeValueType = NUMBER;
+        node->data.number = 0;
+
+        free( node->left );
+        node->left = NULL;
+        free( node->right );
+        node->right = NULL;
+
+    }
+}
+

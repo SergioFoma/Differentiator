@@ -48,5 +48,17 @@ char* readNodeNameFromFile( char** ptrOnSymbolInPosition );
 
 expertSystemErrors buildNewNode( node_t** node, char* nodeName );
 
+double createTreeByRecursiveDescent( );
+
+double getGeneral( char** ptrOnSymbolInPosition );
+
+double getExpression( char** ptrOnSymbolInPosition );
+
+double getTerm( char** ptrOnSymbolInPosition );
+
+double getPrimaryExpression( char** ptrOnSymbolInPosition );
+
+double getNumber( char** ptrOnSymbolInPosition );
+
 #endif
 

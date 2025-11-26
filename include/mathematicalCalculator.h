@@ -35,6 +35,10 @@ void summaryOfConstants( tree_t* treeForOptimisation );
 
 void optimisationConsts( node_t* node );
 
+void removingNeutralElements( tree_t* treeForOptimisation );
+
+void optimisationNeutralElem( node_t* node );
+
 node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable);
