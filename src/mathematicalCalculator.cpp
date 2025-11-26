@@ -6,10 +6,13 @@
 #include "paint.h"
 #include "myStringFunction.h"
 #include "globals.h"
+#include "mathDump.h"
 
 const double epsilon = 1e-5;
 
-const size_t sizeOfArrayWithVariable = 24;
+extern FILE* differentiationDump;
+
+const size_t sizeOfArrayWithVariable = 1;
 double arrayWithVariableValue[ sizeOfArrayWithVariable] = {};
 
 #define ADD_( leftNode, rightNode ) newNode( OPERATOR, ADD, leftNode, rightNode )
@@ -25,7 +28,10 @@ double arrayWithVariableValue[ sizeOfArrayWithVariable] = {};
 #define SH_( rightNode ) newNode( OPERATOR, SH, NULL, rightNode )
 #define EXP_( rightNode ) newNode( OPERATOR, EXP, NULL, rightNode )
 
-/*mathErrors calculateTheFunctionValue( tree_t* tree ){
+#define dR( variable ) differentiation( node->right, variable )
+#define dL( variable ) differentiation( node->left, variable )
+
+mathErrors calculateTheFunctionValue( tree_t* tree ){
     if( tree == NULL ){
         return NULL_PTR;
     }
@@ -64,17 +70,26 @@ double calculateValue( node_t* node ){
 double doMathOperations( node_t* node, double firstNumber, double secondNumber ){
     assert( node );
 
-    for( size_t functionIndex = 0; functionIndex < sizeOfArrayWithMathFunctions; functionIndex++ ){
-        if( node->data.mathOperation == arrayWithMathFunctions[ functionIndex ].mathClass ){
-            return arrayWithMathFunctions[ functionIndex ].func( firstNumber, secondNumber );
+    for( size_t functionIndex = 0; functionIndex < sizeOfMathArray; functionIndex++ ){
+        if( node->data.mathOperation == arrayWithMathInfo[ functionIndex ].mathOperation ){
+            return arrayWithMathInfo[ functionIndex ].doMathOperation( firstNumber, secondNumber );
         }
     }
 
     return 0;
-}*/
+}
 
 double doAdd( double firstNumber, double secondNumber ){
     return firstNumber + secondNumber;
+}
+double doSub( double firstNumber, double secondNumber ){
+    return firstNumber - secondNumber;
+}
+double doMul( double firstNumber, double secondNumber ){
+    return firstNumber * secondNumber;
+}
+double doDiv( double firstNumber, double secondNumber ){
+    return firstNumber / secondNumber;
 }
 
 
@@ -114,9 +129,14 @@ node_t* differentiation( const node_t* node, variablesAndTheyIndex variable ){
 
     for( size_t diffIndex = 0; diffIndex < sizeOfMathArray; diffIndex++ ){
         if( node->data.mathOperation == arrayWithMathInfo[ diffIndex ].mathOperation ){
-            return arrayWithMathInfo[ diffIndex ].differentiationFunc( node, variable );
+            node_t* newNode = NULL;
+            newNode = arrayWithMathInfo[ diffIndex ].differentiationFunc( node, variable );
+            printResultOfDifferentiation( differentiationDump, (node_t*)node, newNode );
+            return newNode;
         }
     }
+
+    return NULL;
 }
 
 node_t* copyNode( node_t* node ){
@@ -169,27 +189,27 @@ node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, no
 node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return ADD_( differentiation( node->left, variable ),
-                 differentiation( node->right, variable )
+    return ADD_( dL( variable ),
+                 dR( variable )
                 );
 }
 
 node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return SUB_( differentiation( node->left, variable ),
-                 differentiation( node->right, variable )
+    return SUB_( dL( variable ),
+                 dR( variable )
                 );
 }
 
 node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return ADD_(MUL_( differentiation( node->left, variable ),
+    return ADD_(MUL_( dL( variable ),
                       copyNode( node->right )
                     ),
                 MUL_( copyNode( node->left ),
-                      differentiation( node->right, variable )
+                      dR( variable )
                     )
                 );
 }
@@ -198,11 +218,11 @@ node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
     return DIV_(
                 SUB_(
-                    MUL_( differentiation( node->left, variable ),
+                    MUL_( dL( variable ),
                           copyNode( node->right )
                         ),
                     MUL_( copyNode( node->left ),
-                          differentiation( node->right, variable )
+                          dR( variable )
                         )
                     ),
                 POW_( copyNode( node->right ),
@@ -214,13 +234,13 @@ node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable){
 node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ), copyNode( node->right ) );
+    return DIV_( dR( variable ), copyNode( node->right ) );
 }
 
 node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                  MUL_( copyNode( node->right ), LN_( copyNode( node->left) ) )
                 );
 }
@@ -228,19 +248,19 @@ node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable){
 node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return MUL_( COS_( copyNode( node->right ) ), differentiation( node->right, variable) ) ;
+    return MUL_( COS_( copyNode( node->right ) ), dR( variable ) ) ;
 }
 
 node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return MUL_( makeConstNode( -1 ), MUL_( SIN_( copyNode( node->right ) ), differentiation( node->right, variable ) ) );
+    return MUL_( makeConstNode( -1 ), MUL_( SIN_( copyNode( node->right ) ), dR( variable ) ) );
 }
 
 node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                  POW_( COS_( copyNode( node->right ) ),
                        makeConstNode( 2 )
                      )
@@ -251,7 +271,7 @@ node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return DIV_( MUL_( makeConstNode( -1 ),
-                       differentiation( node->right, variable )
+                       dR( variable )
                      ),
                  POW_( SIN_( copyNode( node->right ) ),
                        makeConstNode( 2 )
@@ -262,7 +282,7 @@ node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable){
 node_t* differentiationArcsin( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                  SQRT_( SUB_( makeConstNode( 1 ),
                               POW_( copyNode( node->right ), makeConstNode( 2 ) )
                             )
@@ -275,7 +295,7 @@ node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variabl
     assert( node );
 
     return  DIV_( MUL_( makeConstNode( -1 ),
-                        differentiation( node->right, variable )
+                        dR( variable )
                       ),
                   SQRT_( SUB_( makeConstNode( 1 ),
                                 POW_( copyNode( node->right ), makeConstNode( 2 ) )
@@ -287,7 +307,7 @@ node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variabl
 node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                  ADD_( makeConstNode( 1 ),
                        POW_( copyNode( node->right ),
                              makeConstNode( 2 )
@@ -300,7 +320,7 @@ node_t* differentiationArcctg( const node_t* node, variablesAndTheyIndex variabl
     assert( node );
 
     return DIV_( MUL_( makeConstNode( -1 ),
-                       differentiation( node->right, variable )
+                       dR( variable )
                     ),
                  ADD_( makeConstNode( 1 ),
                        POW_( copyNode( node->right ),
@@ -314,7 +334,7 @@ node_t* differentiationSh( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return MUL_( CH_( copyNode( node->right )),
-                 differentiation( node->right, variable )
+                 dR( variable )
                 );
 }
 
@@ -322,14 +342,14 @@ node_t* differentiationCh( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return MUL_( SH_( copyNode( node->right ) ),
-                 differentiation( node->right, variable )
+                 dR( variable )
                 );
 }
 
 node_t* differentiationTh( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                  POW_( CH_( copyNode( node->right ) ),
                         makeConstNode( 2 )
                      )
@@ -340,7 +360,7 @@ node_t* differentiationCth( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return DIV_( MUL_( makeConstNode( -1 ),
-                       differentiation( node->right, variable )
+                       dR( variable )
                      ),
                 POW_( SH_( copyNode( node->right ) ),
                       makeConstNode( 2 )
@@ -352,14 +372,14 @@ node_t* differentiationExp( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
     return MUL_( EXP_( copyNode( node->right ) ),
-                 differentiation( node->right, variable )
+                 dR( variable )
                 );
 }
 
 node_t* differentiationSqrt( const node_t* node, variablesAndTheyIndex variable){
     assert( node );
 
-    return DIV_( differentiation( node->right, variable ),
+    return DIV_( dR( variable ),
                 MUL_( makeConstNode( 2 ),
                      SQRT_( copyNode( node->right ) )
                     )
@@ -377,7 +397,7 @@ node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable )
                      MUL_( POW_( copyNode( node->left ),
                                  makeConstNode( node->right->data.number - 1 )
                                 ),
-                           differentiation( node->left, variable )
+                           dL( variable )
                         )
                     );
     }
@@ -386,7 +406,7 @@ node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable )
         return MUL_( POW_( makeConstNode( node->left->data.number ),
                            copyNode( node->right )
                          ),
-                     MUL_( differentiation( node->right, variable ),
+                     MUL_( dR( variable ),
                            LN_( makeConstNode( node->left->data.number ) )
                          )
                     );
@@ -398,7 +418,7 @@ node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable )
                                  );
 
         return MUL_( EXP_( degreeNode ),
-                     differentiationMul( degreeNode, variable )
+                     differentiation( degreeNode, variable )
                     );
     }
 
@@ -425,4 +445,48 @@ statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variab
     }
 
     return NOT_DETECTED_VAR;
+}
+
+void summaryOfConstants( tree_t* treeForOptimisation ){
+    assert( treeForOptimisation );
+
+    optimisationConsts( treeForOptimisation->rootTree );
+
+}
+
+void optimisationConsts( node_t* node ){
+    assert( node );
+
+    if( node->nodeValueType == NUMBER || node->nodeValueType == VARIABLE ){
+        return ;
+    }
+
+
+    if( node->left ){
+        optimisationConsts( node->left );
+    }
+    if( node->right ){
+        optimisationConsts( node->right );
+    }
+
+    if( node->left && node->right &&
+        node->left->nodeValueType == NUMBER && node->right->nodeValueType == NUMBER ){
+
+        for( size_t indexOfOperators = 0; indexOfOperators < sizeOfMathArray; indexOfOperators++ ){
+            if( node->data.mathOperation == arrayWithMathInfo[ indexOfOperators ].mathOperation ){
+                double resultOfOptimisation = arrayWithMathInfo[ indexOfOperators ].doMathOperation( node->left->data.number,
+                                                                                                     node->right->data.number);
+                node->nodeValueType = NUMBER;
+                node->data.number = resultOfOptimisation;
+
+                free( node->left );
+                node->left = NULL;
+                free( node->right );
+                node->right = NULL;
+
+                break;
+            }
+        }
+    }
+
 }

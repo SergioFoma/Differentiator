@@ -1,2 +1,1 @@
-( ^ ( x nilnil)( x nilnil))
-
+( * ( + ( 5 nilnil)( 5 nilnil))( + ( x nilnil)( 8 nilnil)))

@@ -7,9 +7,9 @@
 
 informationWithMathOperators arrayWithMathInfo[] = {
     { ADD   , "ADD"     , "+"       , printCenterFunctionInLatex    , "+"           ,   doAdd   , differentiationAdd    },
-    { SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doAdd   , differentiationSub    },
-    { MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doAdd   , differentiationMul    },
-    { DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doAdd   , differentiationDiv    },
+    { SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doSub   , differentiationSub    },
+    { MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doMul   , differentiationMul    },
+    { DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doDiv   , differentiationDiv    },
     { LN    , "LN"      , "ln"      , printFunctionOfOneArguments   , "ln"          ,   doAdd   , differentiationLn     },
     { LOG   , "LOG"     , "log"     , printFunctionOfTwoArguments   , "\\log_{"     ,   doAdd   , differentiationLog    },
     { POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    },

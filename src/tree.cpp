@@ -5,46 +5,6 @@
 
 #include "tree.h"
 
-void printNode( const node_t* node ){
-    assert( node );
-
-    printf( "(\"" treeValueFormat "\" ", node->data );
-
-    if( node->left ){
-        printNode( node->left );
-    }
-    if( node->right ){
-        printNode( node->right );
-    }
-
-    printf( ")" );
-}
-
-void printTree( const tree_t* tree ){
-    assert( tree );
-
-    printNode( tree->rootTree );
-}
-
-void printTheSortedNode( const node_t* node ){
-    assert( node );
-
-    if( node->left ){
-        printTheSortedNode( node->left );
-    }
-
-    printf( treeValueFormat " ", node->data );
-
-    if( node->right ){
-        printTheSortedNode( node->right );
-    }
-}
-
-void printTheSortedTree( const tree_t* tree ){
-    assert( tree );
-
-    printTheSortedNode( tree->rootTree );
-}
 
 treeErrors initNode( node_t** node, typeOfDataInNode typeOfData, treeElem_t element ){
     assert( node );

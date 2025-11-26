@@ -9,9 +9,17 @@ enum operationComparison {
     ERROR_OF_COMPARE  = 2
 };
 
-treeErrors dumpMathTree( tree_t* tree );
+char* askInformationAboutMathDump();
+
+FILE* beginMathDump( char* nameOfFileForLatexDump );
+
+treeErrors dumpMathTree( tree_t* tree, FILE* fileForLatex );
+
+void endMathDump( FILE* fileForLatex, char* nameOfFileForLatexDump );
 
 void printMathematicalFormulas( FILE* fileForPrint, node_t* node );
+
+void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode );
 
 void printNumberInLatex( FILE* fileForLatex, node_t* node );
 

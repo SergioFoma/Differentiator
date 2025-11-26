@@ -8,9 +8,9 @@
 #include "paint.h"
 #include "globals.h"
 
-treeErrors dumpMathTree( tree_t* tree ){
-    assert( tree );
+FILE* differentiationDump = NULL;
 
+char* askInformationAboutMathDump(){
     colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will save latex dump: " );
 
     char* nameOfFileForLatexDump = NULL;
@@ -18,13 +18,18 @@ treeErrors dumpMathTree( tree_t* tree ){
     ssize_t sizeOfLine = getlineWrapper( &nameOfFileForLatexDump, &sizeOfAllocationMemory, stdin );
 
     if( sizeOfLine == -1 ){
-        return ERROR_OF_GET_NAME_OF_FILE;
+        return NULL;
     }
+
+    return nameOfFileForLatexDump;
+}
+
+FILE* beginMathDump( char* nameOfFileForLatexDump ){
+    assert( nameOfFileForLatexDump );
 
     FILE* fileForLatex = fopen( nameOfFileForLatexDump, "w" );
     if( fileForLatex == NULL ){
-        free( nameOfFileForLatexDump );
-        return ERROR_OF_OPEN_FILE;
+        return NULL;
     }
 
     fprintf( fileForLatex, "\\documentclass[12pt, litterpaper]{article}\n"
@@ -38,22 +43,36 @@ treeErrors dumpMathTree( tree_t* tree ){
 
     );
 
-    fprintf( fileForLatex, "\\textb{визуализация математический формул в LaTeX:}\n"
+    fprintf( fileForLatex, "\\textb{Дифференцирование математический функций в LaTeX:}\n"
                             "\\newline\n\\newline\n"
     );
 
-    fprintf( fileForLatex, "\\[ " );
+    differentiationDump = fileForLatex;
+    return fileForLatex;
+}
+
+treeErrors dumpMathTree( tree_t* tree, FILE* fileForLatex ){
+    assert( tree );
+    assert( fileForLatex );
+
+    fprintf( fileForLatex, "\n\\[ " );
 
     printMathematicalFormulas( fileForLatex, tree->rootTree );
 
     fprintf( fileForLatex, " \\]\n" );
 
-    fprintf( fileForLatex, "\\end{document}" );
+    return CORRECT_TREE;
+}
+
+void endMathDump( FILE* fileForLatex, char* nameOfFileForLatexDump ){
+    assert( fileForLatex );
+    assert( nameOfFileForLatexDump );
+
+    fprintf( fileForLatex, "\n\\end{document}" );
 
     fclose( fileForLatex );
     free( nameOfFileForLatexDump );
 
-    return CORRECT_TREE;
 }
 
 void printMathematicalFormulas( FILE* fileForLatex, node_t* node ){
@@ -242,4 +261,19 @@ void printFunctionWithOneStaples( FILE* fileForLatex, node_t* node ){
 
 }
 
+void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode ){
+    assert( fileForPrint );
+    assert( originalNode );
+    assert( diffNode );
+
+    fprintf( fileForPrint, "\\[ \\frac{ d }{ dx }( " );
+
+    printMathematicalFormulas( fileForPrint, originalNode );
+
+    fprintf( fileForPrint, ") = " );
+
+    printMathematicalFormulas( fileForPrint, diffNode );
+
+    fprintf( fileForPrint, " \\]\n " );
+}
 

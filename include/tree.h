@@ -4,7 +4,6 @@
 #include <limits.h>
 #include <float.h>
 
-#define treeValueFormat "%s"
 #define nodeValueFormatForPrint( valueFormat ) valueFormat;
 #define maxTreeValue DBL_MAX
 

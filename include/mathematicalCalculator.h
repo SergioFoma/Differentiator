@@ -21,7 +21,6 @@ double calculateValue( node_t* node );
 
 double doMathOperations( node_t* node, double firstNumber, double secondNumber );
 
-
 mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTree );
 
 node_t* differentiation( const node_t* node, variablesAndTheyIndex variable );
@@ -31,6 +30,10 @@ node_t* copyNode( node_t* node );
 node_t* makeConstNode( double value );
 
 node_t* newNode( typeOfDataInNode nodeType, typeOfMathOperation mathOperator, node_t* leftNode, node_t* rightNode );
+
+void summaryOfConstants( tree_t* treeForOptimisation );
+
+void optimisationConsts( node_t* node );
 
 node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable);
 node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable);
@@ -56,7 +59,9 @@ node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable )
 
 statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variable );
 
-
 double doAdd( double firstNumber, double secondNumber );
+double doSub( double firstNumber, double secondNumber );
+double doMul( double firstNumber, double secondNumber );
+double doDiv( double firstNumber, double secondNumber );
 
 #endif
