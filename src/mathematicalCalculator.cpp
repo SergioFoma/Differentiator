@@ -509,17 +509,86 @@ void optimisationNeutralElem( node_t* node ){
         optimisationNeutralElem( node->right );
     }
 
-    if( node->data.mathOperation == MUL && node->left->nodeValueType == NUMBER &&
-        fabs( node->left->data.number ) < epsilon ){
+    if(node->data.mathOperation == MUL &&
+      (node->left->nodeValueType == NUMBER && fabs( node->left->data.number ) < epsilon ||
+       node->right->nodeValueType == NUMBER && fabs( node->right->data.number ) < epsilon )){
+
 
         node->nodeValueType = NUMBER;
         node->data.number = 0;
 
-        free( node->left );
+        destroyNode( node->left );
         node->left = NULL;
-        free( node->right );
+        destroyNode( node->right );
         node->right = NULL;
 
+    }
+    else if( node->data.mathOperation == MUL && node->left->nodeValueType == NUMBER &&
+             fabs( node->left->data.number  - 1 ) < epsilon ){
+
+            if( node->parent->right == node ){
+                node->parent->right = copyNode( node->right );
+                destroyNode( node );
+                node = NULL;
+            }
+            else if( node->parent->left == node ){
+                node->parent->left = copyNode( node->right );
+                destroyNode( node );
+                node = NULL;
+            }
+    }
+    else if( node->data.mathOperation == MUL && node->right->nodeValueType == NUMBER &&
+             fabs( node->right->data.number  - 1 ) < epsilon ){
+
+            if( node->parent->right == node ){
+                node->parent->right = copyNode( node->left );
+                destroyNode( node );
+                node = NULL;
+            }
+            else if( node->parent->left == node ){
+                node->parent->left = copyNode( node->left );
+                destroyNode( node );
+                node = NULL;
+            }
+    }
+    else if( node->data.mathOperation == DIV && node->left->nodeValueType == NUMBER &&
+             fabs( node->left->data.number ) < epsilon ){
+
+            node->nodeValueType = NUMBER;
+            node->data.number = 0;
+
+            destroyNode( node->left );
+            node->left = NULL;
+            destroyNode( node->right );
+            node->right = NULL;
+    }
+    else if( node->data.mathOperation == ADD && node->left->nodeValueType == NUMBER &&
+            fabs( node->left->data.number ) < epsilon ){
+
+            if( node->parent->right == node ){
+                node->parent->right = copyNode( node->right );
+                destroyNode( node );
+                node = NULL;
+            }
+            else if( node->parent->left == node ){
+                node->parent->left = copyNode( node->right );
+                destroyNode( node );
+                node = NULL;
+            }
+    }
+    else if( node->data.mathOperation == ADD && node->right->nodeValueType == NUMBER &&
+             fabs( node->right->data.number ) < epsilon ){
+
+            if( node->parent->right == node ){
+                node->parent->right = copyNode( node->left );
+                destroyNode( node );
+                node = NULL;
+            }
+            else if( node->parent->left == node ){
+                node->parent->left = copyNode( node->left );
+                destroyNode( node );
+                node = NULL;
+            }
     }
 }
 

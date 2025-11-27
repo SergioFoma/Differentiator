@@ -10,9 +10,9 @@
 
 int main(){
 
-    /*tree_t tree = {};
+    tree_t tree = {};
 
-    char* nameOfFileForLatex = askInformationAboutMathDump();
+    /*char* nameOfFileForLatex = askInformationAboutMathDump();
     FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
 
     createTreeFromFile( &tree );
@@ -32,9 +32,15 @@ int main(){
 
     destroyTree( &tree );*/
 
-    double result = createTreeByRecursiveDescent();
+    createTreeFromFile( &tree );
+    removingNeutralElements( &tree );
+    summaryOfConstants( &tree );
+    dumpTree( &tree );
+    destroyTree( &tree );
 
-    printf( "result = %lg\n", result );
+    /*double result = createTreeByRecursiveDescent();
+
+    printf( "result = %lg\n", result );*/
 
     return 0;
 }

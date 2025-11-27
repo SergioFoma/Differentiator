@@ -1,1 +1,1 @@
-10*(30+20*10)+13$
+( * ( + ( 0 nilnil)( 5 nilnil))( * ( 17 nilnil)( + ( x nilnil)( 16 nilnil))))
