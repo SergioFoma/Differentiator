@@ -12,6 +12,8 @@
 #include "globals.h"
 #include "mathematicalCalculator.h"
 
+const size_t maxLenOfTrigonometryFunction = 6;
+
 expertSystemErrors writeInformationInFile( tree_t* tree ){
     if( tree == NULL ){
         return TREE_NULL_PTR;
@@ -239,6 +241,7 @@ expertSystemErrors createTreeByRecursiveDescent( tree_t* tree ){
     fclose( fileForMathStatement );
     destroyBufferInformation( &dataBaseFromFile );
 
+    colorPrintf( NOMODE, GREEN, "\nSuccessfully reading an expression from a file\n");
     return CORRECT_WORK;
 }
 
@@ -263,6 +266,7 @@ node_t* getExpression( char** ptrOnSymbolInPosition ){
 
     node_t* left = getTerm( ptrOnSymbolInPosition );
 
+    printf( "%c ", **ptrOnSymbolInPosition );
     while( **ptrOnSymbolInPosition == '+' || **ptrOnSymbolInPosition == '-' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
@@ -277,6 +281,8 @@ node_t* getExpression( char** ptrOnSymbolInPosition ){
         }
     }
 
+    printf( "%c ", **ptrOnSymbolInPosition );
+
     return left;
 }
 
@@ -284,13 +290,14 @@ node_t* getTerm( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    node_t* left = getPrimaryExpression( ptrOnSymbolInPosition );
+    node_t* left = getTrigonometry( ptrOnSymbolInPosition );
 
+    printf( "%c ", **ptrOnSymbolInPosition );
     while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
-        node_t* right = getPrimaryExpression( ptrOnSymbolInPosition );
+        node_t* right = getTrigonometry( ptrOnSymbolInPosition );
 
         if( operation == '*' ){
             return newNode( OPERATOR, MUL, left, right );
@@ -299,14 +306,45 @@ node_t* getTerm( char** ptrOnSymbolInPosition ){
             return newNode( OPERATOR, DIV, left, right );
         }
     }
-
+    printf( "%c ", **ptrOnSymbolInPosition );
     return left;
+}
+
+node_t* getTrigonometry( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    size_t lineIndex = 0;
+    char* lineForTrigonometryFunc = (char*)calloc( maxLenOfTrigonometryFunction + 1, sizeof( char ) );
+    printf( "%c ", **ptrOnSymbolInPosition );
+    while( islower( (*ptrOnSymbolInPosition)[ lineIndex ] ) && lineIndex < maxLenOfTrigonometryFunction ){
+            lineForTrigonometryFunc[ lineIndex ] = (*ptrOnSymbolInPosition)[ lineIndex ];
+            ++lineIndex;
+    }
+    lineForTrigonometryFunc[ maxLenOfTrigonometryFunction ] = '\0';
+    printf( "%c ", **ptrOnSymbolInPosition );
+    printf( " len = %lu, ", lineIndex );
+    printf( "\n line = %s\n", lineForTrigonometryFunc );
+    for( size_t indexOfMathFunc = 0; indexOfMathFunc < sizeOfMathArray; indexOfMathFunc++ ){
+        if( strcmp( lineForTrigonometryFunc, arrayWithMathInfo[ indexOfMathFunc ].viewOfMathOperationInFile ) == 0 ){
+            *ptrOnSymbolInPosition += lineIndex;
+            printf( "\n in while = %c ", **ptrOnSymbolInPosition );
+            node_t* trigNode = getPrimaryExpression( ptrOnSymbolInPosition );
+            free( lineForTrigonometryFunc );
+            return newNode( OPERATOR, arrayWithMathInfo[ indexOfMathFunc ].mathOperation, NULL, trigNode );
+        }
+    }
+    printf( "%c ", **ptrOnSymbolInPosition );
+    free( lineForTrigonometryFunc );
+    return getPrimaryExpression( ptrOnSymbolInPosition );
+
 }
 
 node_t* getPrimaryExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
+    printf( "%c ", **ptrOnSymbolInPosition );
     if( **ptrOnSymbolInPosition == '(' ){
         ++(*ptrOnSymbolInPosition);
 
@@ -329,7 +367,7 @@ node_t* getNumber( char** ptrOnSymbolInPosition ){
 
     double value = 0;
     bool statusOfReadNumber = false;
-
+    printf( "%c ", **ptrOnSymbolInPosition );
     while( '0' <= (**ptrOnSymbolInPosition) &&
                   (**ptrOnSymbolInPosition) <= '9' ){
 
@@ -337,11 +375,11 @@ node_t* getNumber( char** ptrOnSymbolInPosition ){
         ++(*ptrOnSymbolInPosition);
         statusOfReadNumber = true;
     }
-
+    printf( "%c ", **ptrOnSymbolInPosition );
     if( statusOfReadNumber == false ){
         colorPrintf( NOMODE, RED, "\nError of getNumber:%s %s %d\n", __FILE__, __func__, __LINE__ );
         exit( 0 );
     }
-
+    printf( "%c ", **ptrOnSymbolInPosition );
     return makeConstNode( value );
 }
