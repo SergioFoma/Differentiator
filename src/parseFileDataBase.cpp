@@ -10,6 +10,7 @@
 #include "myStringFunction.h"
 #include "paint.h"
 #include "globals.h"
+#include "mathematicalCalculator.h"
 
 expertSystemErrors writeInformationInFile( tree_t* tree ){
     if( tree == NULL ){
@@ -207,7 +208,7 @@ expertSystemErrors buildNewNode( node_t** node, char* nodeName ){
     return CORRECT_WORK;
 }
 
-double createTreeByRecursiveDescent( ){
+expertSystemErrors createTreeByRecursiveDescent( tree_t* tree ){
     colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will find mathematical statement: " );
 
     char* nameOfFileForMathStatement = NULL;
@@ -215,36 +216,37 @@ double createTreeByRecursiveDescent( ){
     ssize_t sizeOfLine = getlineWrapper( &nameOfFileForMathStatement, &sizeOfAllocationMemory, stdin );
 
     if( sizeOfLine == -1 ){
-        return -1;
+        return ERROR_WITH_GETLINE;
     }
 
     FILE* fileForMathStatement = fopen( nameOfFileForMathStatement, "r" );
     if( fileForMathStatement == NULL ){
         colorPrintf( NOMODE, RED, "\ncan not open file:%s %s %d\n", __FILE__, __func__, __LINE__ );
         free( nameOfFileForMathStatement );
-        return -1;
+        return ERROR_WITH_FILE;
     }
 
     bufferInformation dataBaseFromFile = {};
     errorCode statusOfReadFromFile = initBufferInformation( &dataBaseFromFile, fileForMathStatement, nameOfFileForMathStatement);
     if( statusOfReadFromFile != correct ){
-        return -1;
+        return ERROR_WITH_FILE;
     }
 
     char* ptrOnSymbolInPosition = dataBaseFromFile.buffer;
-    double value = getGeneral( &ptrOnSymbolInPosition );
+    tree->rootTree = getGeneral( &ptrOnSymbolInPosition );
 
     free( nameOfFileForMathStatement );
     fclose( fileForMathStatement );
     destroyBufferInformation( &dataBaseFromFile );
-    return value;
+
+    return CORRECT_WORK;
 }
 
-double getGeneral( char** ptrOnSymbolInPosition ){
+node_t* getGeneral( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    double value = getExpression( ptrOnSymbolInPosition );
+    node_t* expression = getExpression( ptrOnSymbolInPosition );
 
     if( **ptrOnSymbolInPosition != '$' ){
         colorPrintf( NOMODE, RED, "\nError of getGeneral:%s %s %d\n", __FILE__, __func__, __LINE__ );
@@ -252,69 +254,68 @@ double getGeneral( char** ptrOnSymbolInPosition ){
     }
 
     ++(*ptrOnSymbolInPosition);
-    return value;
+    return expression;
 }
 
-double getTerm( char** ptrOnSymbolInPosition ){
+node_t* getExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    double value = getPrimaryExpression( ptrOnSymbolInPosition );
-
-    while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
-        char operation = **ptrOnSymbolInPosition;
-        ++(*ptrOnSymbolInPosition);
-
-        double secondValue = getPrimaryExpression( ptrOnSymbolInPosition );
-
-        if( operation == '*' ){
-            value *= secondValue;
-        }
-        else if( operation == '/' && secondValue != 0 ){
-            value /= secondValue;
-        }
-    }
-
-    return value;
-}
-
-double getExpression( char** ptrOnSymbolInPosition ){
-    assert( ptrOnSymbolInPosition );
-    assert( *ptrOnSymbolInPosition );
-
-    double value = getTerm( ptrOnSymbolInPosition );
+    node_t* left = getTerm( ptrOnSymbolInPosition );
 
     while( **ptrOnSymbolInPosition == '+' || **ptrOnSymbolInPosition == '-' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
-        double secondValue = getTerm( ptrOnSymbolInPosition );
+        node_t* right = getTerm( ptrOnSymbolInPosition );
 
         if( operation == '+' ){
-            value += secondValue;
+            return newNode( OPERATOR, ADD, left, right );
         }
         else{
-            value -= secondValue;
+            return newNode( OPERATOR, SUB, left, right );
         }
     }
 
-    return value;
-
+    return left;
 }
 
-double getPrimaryExpression( char** ptrOnSymbolInPosition ){
+node_t* getTerm( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( *ptrOnSymbolInPosition );
+
+    node_t* left = getPrimaryExpression( ptrOnSymbolInPosition );
+
+    while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
+        char operation = **ptrOnSymbolInPosition;
+        ++(*ptrOnSymbolInPosition);
+
+        node_t* right = getPrimaryExpression( ptrOnSymbolInPosition );
+
+        if( operation == '*' ){
+            return newNode( OPERATOR, MUL, left, right );
+        }
+        else if( operation == '/' ){
+            return newNode( OPERATOR, DIV, left, right );
+        }
+    }
+
+    return left;
+}
+
+node_t* getPrimaryExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
     if( **ptrOnSymbolInPosition == '(' ){
         ++(*ptrOnSymbolInPosition);
 
-        double value = getExpression( ptrOnSymbolInPosition );
+        node_t* nodeFromExpression = getExpression( ptrOnSymbolInPosition );
 
         if( **ptrOnSymbolInPosition == ')' ){
             ++(*ptrOnSymbolInPosition);
         }
-        return value;
+        return nodeFromExpression;
     }
     else{
         return getNumber( ptrOnSymbolInPosition );
@@ -322,7 +323,7 @@ double getPrimaryExpression( char** ptrOnSymbolInPosition ){
 
 }
 
-double getNumber( char** ptrOnSymbolInPosition ){
+node_t* getNumber( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
@@ -342,5 +343,5 @@ double getNumber( char** ptrOnSymbolInPosition ){
         exit( 0 );
     }
 
-    return value;
+    return makeConstNode( value );
 }

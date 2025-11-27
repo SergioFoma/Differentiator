@@ -32,15 +32,15 @@ int main(){
 
     destroyTree( &tree );*/
 
-    createTreeFromFile( &tree );
+    /*createTreeFromFile( &tree );
     removingNeutralElements( &tree );
     summaryOfConstants( &tree );
     dumpTree( &tree );
+    destroyTree( &tree );*/
+
+    createTreeByRecursiveDescent( &tree );
+    dumpTree( &tree );
     destroyTree( &tree );
-
-    /*double result = createTreeByRecursiveDescent();
-
-    printf( "result = %lg\n", result );*/
 
     return 0;
 }
