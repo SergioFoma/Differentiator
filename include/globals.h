@@ -5,6 +5,12 @@
 
 #include "tree.h"
 
+enum functionClasses {
+    ONE_ARG   = 0,
+    TWO_ARG   = 1,
+    TRIG      = 2
+};
+
 struct informationWithValueType {
     typeOfDataInNode typeOfData;
     const char* nameOfType;
@@ -21,6 +27,7 @@ struct informationWithMathOperators {
     const char* viewInLatex;
     double(*doMathOperation)( double firstNumber, double doubleSecondNumber );
     node_t*(*differentiationFunc)( const node_t* node, variablesAndTheyIndex variable );
+    functionClasses functionClass;
 };
 
 extern informationWithMathOperators arrayWithMathInfo[];

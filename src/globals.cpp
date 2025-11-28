@@ -6,27 +6,27 @@
 #include "mathematicalCalculator.h"
 
 informationWithMathOperators arrayWithMathInfo[] = {
-    { ADD   , "ADD"     , "+"       , printCenterFunctionInLatex    , "+"           ,   doAdd   , differentiationAdd    },
-    { SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doSub   , differentiationSub    },
-    { MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doMul   , differentiationMul    },
-    { DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doDiv   , differentiationDiv    },
-    { LN    , "LN"      , "ln"      , printFunctionOfOneArguments   , "ln"          ,   doAdd   , differentiationLn     },
-    { LOG   , "LOG"     , "log"     , printFunctionOfTwoArguments   , "\\log_{"     ,   doAdd   , differentiationLog    },
-    { POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    },
-    { SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin "        ,   doAdd   , differentiationSin    },
-    { COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos "        ,   doAdd   , differentiationCos    },
-    { TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg "         ,   doAdd   , differentiationTg     },
-    { CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg "        ,   doAdd   , differentiationCtg    },
-    { ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin "     ,   doAdd   , differentiationArcsin },
-    { ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos "     ,   doAdd   , differentiationArccos },
-    { ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg "      ,   doAdd   , differentiationArctg  },
-    { ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationArcctg },
-    { SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationSh     },
-    { CH    , "CH"      , "ch"      , printFunctionOfOneArguments   , "ch "         ,   doAdd   , differentiationCh     },
-    { TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationTh     },
-    { CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationCth    },
-    { EXP   , "EXP"     , "exp"     , printFunctionWithOneStaples   , "e^{"         ,   doAdd   , differentiationExp    },
-    { SQRT  , "SQRT"    , "sqrt"    , printFunctionWithOneStaples   , "\\sqrt{"     ,   doAdd   , differentiationSqrt   }
+{ ADD   , "ADD"     , "+"       , printCenterFunctionInLatex    , "+"           ,   doAdd   , differentiationAdd    ,   TWO_ARG    },
+{ SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doSub   , differentiationSub    ,   TWO_ARG    },
+{ MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doMul   , differentiationMul    ,   TWO_ARG    },
+{ DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doDiv   , differentiationDiv    ,   TWO_ARG    },
+{ LN    , "LN"      , "ln"      , printFunctionOfOneArguments   , "ln"          ,   doAdd   , differentiationLn     ,   ONE_ARG    },
+{ LOG   , "LOG"     , "log"     , printFunctionOfTwoArguments   , "\\log_{"     ,   doAdd   , differentiationLog    ,   TWO_ARG    },
+{ POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    ,   TWO_ARG    },
+{ SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin "        ,   doAdd   , differentiationSin    ,   TRIG       },
+{ COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos "        ,   doAdd   , differentiationCos    ,   TRIG       },
+{ TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg "         ,   doAdd   , differentiationTg     ,   TRIG       },
+{ CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg "        ,   doAdd   , differentiationCtg    ,   TRIG       },
+{ ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin "     ,   doAdd   , differentiationArcsin ,   TRIG       },
+{ ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos "     ,   doAdd   , differentiationArccos ,   TRIG       },
+{ ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg "      ,   doAdd   , differentiationArctg  ,   TRIG       },
+{ ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationArcctg ,   TRIG       },
+{ SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationSh     ,   TRIG       },
+{ CH    , "CH"      , "ch"      , printFunctionOfOneArguments   , "ch "         ,   doAdd   , differentiationCh     ,   TRIG       },
+{ TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationTh     ,   TRIG       },
+{ CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationCth    ,   TRIG       },
+{ EXP   , "EXP"     , "exp"     , printFunctionWithOneStaples   , "e^{"         ,   doAdd   , differentiationExp    ,   ONE_ARG    },
+{ SQRT  , "SQRT"    , "sqrt"    , printFunctionWithOneStaples   , "\\sqrt{"     ,   doAdd   , differentiationSqrt   ,   ONE_ARG    }
 };
 const size_t sizeOfMathArray = sizeof( arrayWithMathInfo ) / sizeof( arrayWithMathInfo[ 0 ] );
 

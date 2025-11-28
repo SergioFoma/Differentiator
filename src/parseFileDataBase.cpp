@@ -251,7 +251,10 @@ node_t* getGeneral( char** ptrOnSymbolInPosition ){
 
     node_t* expression = getExpression( ptrOnSymbolInPosition );
 
+    printf( "char gen = %c\n", **ptrOnSymbolInPosition );
+
     if( **ptrOnSymbolInPosition != '$' ){
+        printf( "%c\n", **ptrOnSymbolInPosition );
         colorPrintf( NOMODE, RED, "\nError of getGeneral:%s %s %d\n", __FILE__, __func__, __LINE__ );
         exit( 0 );
     }
@@ -264,24 +267,24 @@ node_t* getExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
+    printf( "char in epr before term = %c\n", **ptrOnSymbolInPosition );
     node_t* left = getTerm( ptrOnSymbolInPosition );
 
-    printf( "%c ", **ptrOnSymbolInPosition );
+    printf( "char in epr  after = %c\n", **ptrOnSymbolInPosition );
     while( **ptrOnSymbolInPosition == '+' || **ptrOnSymbolInPosition == '-' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
         node_t* right = getTerm( ptrOnSymbolInPosition );
 
+        printf( "operation = %c, ptrOn = %c\n", operation, **ptrOnSymbolInPosition);
         if( operation == '+' ){
-            return newNode( OPERATOR, ADD, left, right );
+            left = newNode( OPERATOR, ADD, left, right );
         }
         else{
-            return newNode( OPERATOR, SUB, left, right );
+            left = newNode( OPERATOR, SUB, left, right );
         }
     }
-
-    printf( "%c ", **ptrOnSymbolInPosition );
 
     return left;
 }
@@ -292,7 +295,7 @@ node_t* getTerm( char** ptrOnSymbolInPosition ){
 
     node_t* left = getTrigonometry( ptrOnSymbolInPosition );
 
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
@@ -306,7 +309,7 @@ node_t* getTerm( char** ptrOnSymbolInPosition ){
             return newNode( OPERATOR, DIV, left, right );
         }
     }
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     return left;
 }
 
@@ -316,25 +319,24 @@ node_t* getTrigonometry( char** ptrOnSymbolInPosition ){
 
     size_t lineIndex = 0;
     char* lineForTrigonometryFunc = (char*)calloc( maxLenOfTrigonometryFunction + 1, sizeof( char ) );
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     while( islower( (*ptrOnSymbolInPosition)[ lineIndex ] ) && lineIndex < maxLenOfTrigonometryFunction ){
             lineForTrigonometryFunc[ lineIndex ] = (*ptrOnSymbolInPosition)[ lineIndex ];
             ++lineIndex;
     }
     lineForTrigonometryFunc[ maxLenOfTrigonometryFunction ] = '\0';
-    printf( "%c ", **ptrOnSymbolInPosition );
-    printf( " len = %lu, ", lineIndex );
-    printf( "\n line = %s\n", lineForTrigonometryFunc );
+
     for( size_t indexOfMathFunc = 0; indexOfMathFunc < sizeOfMathArray; indexOfMathFunc++ ){
-        if( strcmp( lineForTrigonometryFunc, arrayWithMathInfo[ indexOfMathFunc ].viewOfMathOperationInFile ) == 0 ){
+        if( arrayWithMathInfo[ indexOfMathFunc ].functionClass == TRIG &&
+            strcmp( lineForTrigonometryFunc, arrayWithMathInfo[ indexOfMathFunc ].viewOfMathOperationInFile ) == 0 ){
             *ptrOnSymbolInPosition += lineIndex;
-            printf( "\n in while = %c ", **ptrOnSymbolInPosition );
             node_t* trigNode = getPrimaryExpression( ptrOnSymbolInPosition );
+            printf( "char in trig = %c\n", **ptrOnSymbolInPosition );
             free( lineForTrigonometryFunc );
             return newNode( OPERATOR, arrayWithMathInfo[ indexOfMathFunc ].mathOperation, NULL, trigNode );
         }
     }
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     free( lineForTrigonometryFunc );
     return getPrimaryExpression( ptrOnSymbolInPosition );
 
@@ -344,12 +346,13 @@ node_t* getPrimaryExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     if( **ptrOnSymbolInPosition == '(' ){
         ++(*ptrOnSymbolInPosition);
 
         node_t* nodeFromExpression = getExpression( ptrOnSymbolInPosition );
 
+        printf( "char in get primary expr = %c\n", **ptrOnSymbolInPosition  );
         if( **ptrOnSymbolInPosition == ')' ){
             ++(*ptrOnSymbolInPosition);
         }
@@ -367,7 +370,7 @@ node_t* getNumber( char** ptrOnSymbolInPosition ){
 
     double value = 0;
     bool statusOfReadNumber = false;
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     while( '0' <= (**ptrOnSymbolInPosition) &&
                   (**ptrOnSymbolInPosition) <= '9' ){
 
@@ -375,11 +378,11 @@ node_t* getNumber( char** ptrOnSymbolInPosition ){
         ++(*ptrOnSymbolInPosition);
         statusOfReadNumber = true;
     }
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     if( statusOfReadNumber == false ){
         colorPrintf( NOMODE, RED, "\nError of getNumber:%s %s %d\n", __FILE__, __func__, __LINE__ );
         exit( 0 );
     }
-    printf( "%c ", **ptrOnSymbolInPosition );
+
     return makeConstNode( value );
 }
