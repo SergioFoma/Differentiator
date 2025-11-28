@@ -12,7 +12,7 @@
 #include "globals.h"
 #include "mathematicalCalculator.h"
 
-const size_t maxLenOfTrigonometryFunction = 6;
+const size_t maxLenOfFunction = 6;
 
 expertSystemErrors writeInformationInFile( tree_t* tree ){
     if( tree == NULL ){
@@ -314,13 +314,13 @@ node_t* getPow( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( **ptrOnSymbolInPosition );
 
-    node_t* left = getTrigonometry( ptrOnSymbolInPosition );
+    node_t* left = getFunctionWithOneArgument( ptrOnSymbolInPosition );
 
     while( **ptrOnSymbolInPosition == '^' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
-        node_t* right = getTrigonometry( ptrOnSymbolInPosition );
+        node_t* right = getFunctionWithOneArgument( ptrOnSymbolInPosition );
 
         if( operation == '^' ){
             left = newNode( OPERATOR, POW, left, right );
@@ -330,31 +330,30 @@ node_t* getPow( char** ptrOnSymbolInPosition ){
     return left;
 
 }
-node_t* getTrigonometry( char** ptrOnSymbolInPosition ){
+node_t* getFunctionWithOneArgument( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
     size_t lineIndex = 0;
-    char* lineForTrigonometryFunc = (char*)calloc( maxLenOfTrigonometryFunction + 1, sizeof( char ) );
+    char* lineForFunc = (char*)calloc( maxLenOfFunction + 1, sizeof( char ) );
 
-    while( islower( (*ptrOnSymbolInPosition)[ lineIndex ] ) && lineIndex < maxLenOfTrigonometryFunction ){
-            lineForTrigonometryFunc[ lineIndex ] = (*ptrOnSymbolInPosition)[ lineIndex ];
+    while( islower( (*ptrOnSymbolInPosition)[ lineIndex ] ) && lineIndex < maxLenOfFunction ){
+            lineForFunc[ lineIndex ] = (*ptrOnSymbolInPosition)[ lineIndex ];
             ++lineIndex;
     }
-    lineForTrigonometryFunc[ maxLenOfTrigonometryFunction ] = '\0';
+    lineForFunc[ maxLenOfFunction ] = '\0';
 
     for( size_t indexOfMathFunc = 0; indexOfMathFunc < sizeOfMathArray; indexOfMathFunc++ ){
-        if( arrayWithMathInfo[ indexOfMathFunc ].functionClass == TRIG &&
-            strcmp( lineForTrigonometryFunc, arrayWithMathInfo[ indexOfMathFunc ].viewOfMathOperationInFile ) == 0 ){
+        if( arrayWithMathInfo[ indexOfMathFunc ].functionClass == ONE_ARG &&
+            strcmp( lineForFunc, arrayWithMathInfo[ indexOfMathFunc ].viewOfMathOperationInFile ) == 0 ){
             *ptrOnSymbolInPosition += lineIndex;
-            node_t* trigNode = getPrimaryExpression( ptrOnSymbolInPosition );
-            printf( "char in trig = %c\n", **ptrOnSymbolInPosition );
-            free( lineForTrigonometryFunc );
-            return newNode( OPERATOR, arrayWithMathInfo[ indexOfMathFunc ].mathOperation, NULL, trigNode );
+            node_t* funcNode = getPrimaryExpression( ptrOnSymbolInPosition );
+            free( lineForFunc );
+            return newNode( OPERATOR, arrayWithMathInfo[ indexOfMathFunc ].mathOperation, NULL, funcNode );
         }
     }
 
-    free( lineForTrigonometryFunc );
+    free( lineForFunc );
     return getPrimaryExpression( ptrOnSymbolInPosition );
 
 }
@@ -369,7 +368,6 @@ node_t* getPrimaryExpression( char** ptrOnSymbolInPosition ){
 
         node_t* nodeFromExpression = getExpression( ptrOnSymbolInPosition );
 
-        printf( "char in get primary expr = %c\n", **ptrOnSymbolInPosition  );
         if( **ptrOnSymbolInPosition == ')' ){
             ++(*ptrOnSymbolInPosition);
         }

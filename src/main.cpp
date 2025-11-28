@@ -38,7 +38,13 @@ int main(){
     dumpTree( &tree );
     destroyTree( &tree );*/
 
+    char* nameOfFileForLatex = askInformationAboutMathDump();
+    FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
+
     createTreeByRecursiveDescent( &tree );
+
+    dumpMathTree( &tree, fileForLatex );
+    endMathDump( fileForLatex, nameOfFileForLatex );
 
     dumpTree( &tree );
     destroyTree( &tree );
