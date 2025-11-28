@@ -267,17 +267,14 @@ node_t* getExpression( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    printf( "char in epr before term = %c\n", **ptrOnSymbolInPosition );
     node_t* left = getTerm( ptrOnSymbolInPosition );
 
-    printf( "char in epr  after = %c\n", **ptrOnSymbolInPosition );
     while( **ptrOnSymbolInPosition == '+' || **ptrOnSymbolInPosition == '-' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
         node_t* right = getTerm( ptrOnSymbolInPosition );
 
-        printf( "operation = %c, ptrOn = %c\n", operation, **ptrOnSymbolInPosition);
         if( operation == '+' ){
             left = newNode( OPERATOR, ADD, left, right );
         }
@@ -293,26 +290,46 @@ node_t* getTerm( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );
 
-    node_t* left = getTrigonometry( ptrOnSymbolInPosition );
+    node_t* left = getPow( ptrOnSymbolInPosition );
 
 
     while( **ptrOnSymbolInPosition == '*' || **ptrOnSymbolInPosition == '/' ){
         char operation = **ptrOnSymbolInPosition;
         ++(*ptrOnSymbolInPosition);
 
-        node_t* right = getTrigonometry( ptrOnSymbolInPosition );
+        node_t* right = getPow( ptrOnSymbolInPosition );
 
         if( operation == '*' ){
-            return newNode( OPERATOR, MUL, left, right );
+            left = newNode( OPERATOR, MUL, left, right );
         }
         else if( operation == '/' ){
-            return newNode( OPERATOR, DIV, left, right );
+            left = newNode( OPERATOR, DIV, left, right );
         }
     }
 
     return left;
 }
 
+node_t* getPow( char** ptrOnSymbolInPosition ){
+    assert( ptrOnSymbolInPosition );
+    assert( **ptrOnSymbolInPosition );
+
+    node_t* left = getTrigonometry( ptrOnSymbolInPosition );
+
+    while( **ptrOnSymbolInPosition == '^' ){
+        char operation = **ptrOnSymbolInPosition;
+        ++(*ptrOnSymbolInPosition);
+
+        node_t* right = getTrigonometry( ptrOnSymbolInPosition );
+
+        if( operation == '^' ){
+            left = newNode( OPERATOR, POW, left, right );
+        }
+    }
+
+    return left;
+
+}
 node_t* getTrigonometry( char** ptrOnSymbolInPosition ){
     assert( ptrOnSymbolInPosition );
     assert( *ptrOnSymbolInPosition );

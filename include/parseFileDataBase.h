@@ -54,9 +54,11 @@ node_t* getGeneral( char** ptrOnSymbolInPosition );
 
 node_t* getExpression( char** ptrOnSymbolInPosition );
 
-node_t* getTrigonometry( char** ptrOnSymbolInPosition );
-
 node_t* getTerm( char** ptrOnSymbolInPosition );
+
+node_t* getPow( char** ptrOnSymbolInPosition );
+
+node_t* getTrigonometry( char** ptrOnSymbolInPosition );
 
 node_t* getPrimaryExpression( char** ptrOnSymbolInPosition );
 
