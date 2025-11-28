@@ -422,7 +422,7 @@ node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable )
                     );
     }
 
-    return NULL;
+    return makeConstNode( 0 );
 }
 
 statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variable ){

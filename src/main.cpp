@@ -39,6 +39,7 @@ int main(){
     destroyTree( &tree );*/
 
     createTreeByRecursiveDescent( &tree );
+
     dumpTree( &tree );
     destroyTree( &tree );
 

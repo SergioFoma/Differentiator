@@ -225,7 +225,9 @@ void printFunctionOfOneArguments( FILE* fileForLatex, node_t* node ){
     }
 
     if( node->right ){
+        fprintf( fileForLatex, " \\left( " );
         printMathematicalFormulas( fileForLatex, node->right );
+        fprintf( fileForLatex, " \\right) " );
     }
     if( statusOfCompare == LOWER_IN_PRIORITY ){
         fprintf( fileForLatex, "\\right)" );

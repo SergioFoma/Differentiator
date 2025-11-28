@@ -6,25 +6,25 @@
 #include "mathematicalCalculator.h"
 
 informationWithMathOperators arrayWithMathInfo[] = {
-{ ADD   , "ADD"     , "+"       , printCenterFunctionInLatex    , "+"           ,   doAdd   , differentiationAdd    ,   TWO_ARG    },
-{ SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doSub   , differentiationSub    ,   TWO_ARG    },
-{ MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doMul   , differentiationMul    ,   TWO_ARG    },
-{ DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doDiv   , differentiationDiv    ,   TWO_ARG    },
+{ ADD   , "ADD"     , "+"       , printCenterFunctionInLatex    , "+"           ,   doAdd   , differentiationAdd    ,   TWO_ARG    }, //complete
+{ SUB   , "SUB"     , "-"       , printCenterFunctionInLatex    , "-"           ,   doSub   , differentiationSub    ,   TWO_ARG    }, //complete
+{ MUL   , "MUL"     , "*"       , printCenterFunctionInLatex    , "\\cdot "     ,   doMul   , differentiationMul    ,   TWO_ARG    }, //complete
+{ DIV   , "DIV"     , "/"       , printFunctionOfTwoArguments   , "\\frac{"     ,   doDiv   , differentiationDiv    ,   TWO_ARG    }, //complete
 { LN    , "LN"      , "ln"      , printFunctionOfOneArguments   , "ln"          ,   doAdd   , differentiationLn     ,   ONE_ARG    },
 { LOG   , "LOG"     , "log"     , printFunctionOfTwoArguments   , "\\log_{"     ,   doAdd   , differentiationLog    ,   TWO_ARG    },
-{ POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    ,   TWO_ARG    },
-{ SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin "        ,   doAdd   , differentiationSin    ,   TRIG       },
-{ COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos "        ,   doAdd   , differentiationCos    ,   TRIG       },
-{ TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg "         ,   doAdd   , differentiationTg     ,   TRIG       },
-{ CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg "        ,   doAdd   , differentiationCtg    ,   TRIG       },
-{ ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin "     ,   doAdd   , differentiationArcsin ,   TRIG       },
-{ ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos "     ,   doAdd   , differentiationArccos ,   TRIG       },
-{ ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg "      ,   doAdd   , differentiationArctg  ,   TRIG       },
-{ ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationArcctg ,   TRIG       },
-{ SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationSh     ,   TRIG       },
-{ CH    , "CH"      , "ch"      , printFunctionOfOneArguments   , "ch "         ,   doAdd   , differentiationCh     ,   TRIG       },
-{ TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationTh     ,   TRIG       },
-{ CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationCth    ,   TRIG       },
+{ POW   , "POW"     , "^"       , printFunctionWithOneStaples   , "^{"          ,   doAdd   , differentiationPow    ,   TWO_ARG    }, //complete
+{ SIN   , "SIN"     , "sin"     , printFunctionOfOneArguments   , "sin "        ,   doAdd   , differentiationSin    ,   TRIG       }, //complete
+{ COS   , "COS"     , "cos"     , printFunctionOfOneArguments   , "cos "        ,   doAdd   , differentiationCos    ,   TRIG       }, //complete
+{ TG    , "TG"      , "tg"      , printFunctionOfOneArguments   , "tg "         ,   doAdd   , differentiationTg     ,   TRIG       }, //complete
+{ CTG   , "CTG"     , "ctg"     , printFunctionOfOneArguments   , "ctg "        ,   doAdd   , differentiationCtg    ,   TRIG       }, //complete
+{ ARCSIN, "ARCSIN"  , "arcsin"  , printFunctionOfOneArguments   , "arcsin "     ,   doAdd   , differentiationArcsin ,   TRIG       }, //complete
+{ ARCCOS, "ARCCOS"  , "arccos"  , printFunctionOfOneArguments   , "arccos "     ,   doAdd   , differentiationArccos ,   TRIG       }, //complete
+{ ARCTG , "ARCTG"   , "arctg"   , printFunctionOfOneArguments   , "arctg "      ,   doAdd   , differentiationArctg  ,   TRIG       }, //complete
+{ ARCCTG, "ARCCTG"  , "arcctg"  , printFunctionOfOneArguments   , "arcctg "     ,   doAdd   , differentiationArcctg ,   TRIG       }, //complete
+{ SH    , "SH"      , "sh"      , printFunctionOfOneArguments   , "sh "         ,   doAdd   , differentiationSh     ,   TRIG       }, //complete
+{ CH    , "CH"      , "ch"      , printFunctionOfOneArguments   , "ch "         ,   doAdd   , differentiationCh     ,   TRIG       }, //complete
+{ TH    , "TH"      , "th"      , printFunctionOfOneArguments   , "th "         ,   doAdd   , differentiationTh     ,   TRIG       }, //complete
+{ CTH   , "CTH"     , "cth"     , printFunctionOfOneArguments   , "cth "        ,   doAdd   , differentiationCth    ,   TRIG       }, //complete
 { EXP   , "EXP"     , "exp"     , printFunctionWithOneStaples   , "e^{"         ,   doAdd   , differentiationExp    ,   ONE_ARG    },
 { SQRT  , "SQRT"    , "sqrt"    , printFunctionWithOneStaples   , "\\sqrt{"     ,   doAdd   , differentiationSqrt   ,   ONE_ARG    }
 };
@@ -66,26 +66,3 @@ informationWithValueType arrayWithValueType[] = {
         { OPERATOR, "OPERATOR"}
 };
 const size_t sizeOfArrayWithValueType = sizeof( arrayWithValueType ) / sizeof( arrayWithValueType[ 0 ] );
-
-/*
-double doSub( double firstNumber, double secondNumber );
-double doMul( double firstNumber, double secondNumber );
-double doDiv( double firstNumber, double secondNumber );
-double doLn( double firstNumber, double secondNumber );
-double doLog( double firstNumber, double secondNumber );
-double doPow( double firstNumber, double secondNumber );
-double doSin( double firstNumber, double secondNumber );
-double doCos( double firstNumber, double secondNumber );
-double doTg( double firstNumber, double secondNumber );
-double doCtg( double firstNumber, double secondNumber );
-double doArcsin( double firstNumber, double secondNumber );
-double doArccos( double firstNumber, double secondNumber );
-double doArctg( double firstNumber, double secondNumber );
-double doArcctg( double firstNumber, double secondNumber );
-double doSh( double firstNumber, double secondNumber );
-double doTh( double firstNumber, double secondNumber );
-double doCth( double firstNumber, double secondNumber );
-double doExp( double firstNumber, double secondNumber );
-double doSqrt( double firstNumber, double secondNumber );
-
-*/
