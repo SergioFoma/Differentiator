@@ -6,9 +6,7 @@
 #include "treeDump.h"
 #include "myStringFunction.h"
 #include "paint.h"
-#include "globals.h"
-
-FILE* differentiationDump = NULL;
+#include "mathOperatorsInfo.h"
 
 char* askInformationAboutMathDump(){
     colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will save latex dump: " );
@@ -47,7 +45,6 @@ FILE* beginMathDump( char* nameOfFileForLatexDump ){
                             "\\newline\n\\newline\n"
     );
 
-    differentiationDump = fileForLatex;
     return fileForLatex;
 }
 

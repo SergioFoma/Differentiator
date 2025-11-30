@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "treeDump.h"
-#include "globals.h"
+#include "mathOperatorsInfo.h"
 
 static int firstRank = 1;
 

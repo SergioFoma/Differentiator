@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "globals.h"
+#include "mathOperatorsInfo.h"
 #include "mathDump.h"
 #include "mathematicalCalculator.h"
 

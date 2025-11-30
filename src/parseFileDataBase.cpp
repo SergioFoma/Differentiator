@@ -9,7 +9,7 @@
 #include "treeDump.h"
 #include "myStringFunction.h"
 #include "paint.h"
-#include "globals.h"
+#include "mathOperatorsInfo.h"
 #include "mathematicalCalculator.h"
 
 const size_t maxLenOfFunction = 6;

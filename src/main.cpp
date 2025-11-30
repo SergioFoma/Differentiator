@@ -12,42 +12,20 @@ int main(){
 
     tree_t tree = {};
 
-    /*char* nameOfFileForLatex = askInformationAboutMathDump();
-    FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
-
-    createTreeFromFile( &tree );
-
-    tree_t differentiationTree ={};
-
-    dumpMathTree( &tree, fileForLatex );
-    differentiationOfTheFunction( &tree, &differentiationTree );
-
-    endMathDump( fileForLatex, nameOfFileForLatex );
-
-    summaryOfConstants( &tree );
-
-    dumpTree(&tree);
-
-    destroyTree( &differentiationTree );
-
-    destroyTree( &tree );*/
-
-    /*createTreeFromFile( &tree );
-    removingNeutralElements( &tree );
-    summaryOfConstants( &tree );
-    dumpTree( &tree );
-    destroyTree( &tree );*/
-
     char* nameOfFileForLatex = askInformationAboutMathDump();
     FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
 
     createTreeByRecursiveDescent( &tree );
+
+    tree_t differentiationTree = {};
+    differentiationOfTheFunction( &tree, &differentiationTree, fileForLatex );
 
     dumpMathTree( &tree, fileForLatex );
     endMathDump( fileForLatex, nameOfFileForLatex );
 
     dumpTree( &tree );
     destroyTree( &tree );
+    destroyTree( &differentiationTree );
 
     return 0;
 }

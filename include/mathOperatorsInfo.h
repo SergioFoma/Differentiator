@@ -26,7 +26,7 @@ struct informationWithMathOperators {
     void(*printInLatex)( FILE* fileForLatex, node_t* node );
     const char* viewInLatex;
     double(*doMathOperation)( double firstNumber, double doubleSecondNumber );
-    node_t*(*differentiationFunc)( const node_t* node, variablesAndTheyIndex variable );
+    node_t*(*differentiationFunc)( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump );
     functionClasses functionClass;
 };
 
