@@ -259,12 +259,14 @@ void printFunctionWithOneStaples( FILE* fileForLatex, node_t* node ){
 
 }
 
-void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode ){
+void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode, size_t variable ){
     assert( fileForPrint );
     assert( originalNode );
     assert( diffNode );
 
-    fprintf( fileForPrint, "\\[ \\frac{ d }{ dx }( " );
+    char* variableName = getVarName( variable );
+
+    fprintf( fileForPrint, "\\[ \\frac{ d }{ d(%s) }( ", variableName );
 
     printMathematicalFormulas( fileForPrint, originalNode );
 
@@ -275,3 +277,12 @@ void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, nod
     fprintf( fileForPrint, " \\]\n " );
 }
 
+char* getVarName( size_t variable ){
+
+    for( size_t varIndex = 0; varIndex < infoForVarArray.freeIndexNow; varIndex++ ){
+        if( variable == arrayWithVariables[varIndex].variableIndexInArray ){
+            return arrayWithVariables[varIndex].nameOfVariable;
+        }
+    }
+    return NULL;
+}

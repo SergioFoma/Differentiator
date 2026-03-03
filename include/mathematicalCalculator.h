@@ -6,7 +6,8 @@
 enum mathErrors {
     CORRECT_CALCULATE           = 0,
     CORRECT_DIFFERENTIATION     = 1,
-    NULL_PTR                    = 2
+    INCORRECT_VAR_NAME          = 2,
+    NULL_PTR                    = 3
 };
 
 enum statusOfFind {
@@ -22,6 +23,10 @@ double calculateValue( node_t* node );
 double doMathOperations( node_t* node, double firstNumber, double secondNumber );
 
 mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTree, FILE* fileForDump );
+
+ssize_t readingVar();
+
+ssize_t getVarIndex( char* varName );
 
 node_t* differentiation( const node_t* node, size_t variable, FILE* fileForDump );
 

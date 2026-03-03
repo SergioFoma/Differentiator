@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
+#include <string.h>
 
 #include "mathematicalCalculator.h"
 #include "paint.h"
@@ -45,9 +46,41 @@ mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTr
     assert( differentiationTree );
     assert( fileForDump );
 
-    differentiationTree->rootTree = differentiation( tree->rootTree, 0, fileForDump );
+    ssize_t variableIndex = readingVar();
+    if( variableIndex == -1 ){
+        colorPrintf( NOMODE, RED, "You entered an incorrect variable name:%s, %s, %d\n", __FILE__, __func__, __LINE__ );
+        return INCORRECT_VAR_NAME;
+    }
 
+    differentiationTree->rootTree = differentiation( tree->rootTree, (size_t)variableIndex, fileForDump );
     return CORRECT_DIFFERENTIATION;
+}
+
+ssize_t readingVar(){
+
+    colorPrintf( NOMODE, YELLOW, "Enter the name of the variable by which you want to differentiate: ");
+    char* varName = NULL;
+    size_t sizeOfAllocationMemory = 0;
+    ssize_t sizeOfLine = getlineWrapper( &varName, &sizeOfAllocationMemory, stdin );
+
+    if( sizeOfLine == -1 ){
+        return -1;;
+    }
+
+    ssize_t varIndex = getVarIndex( varName );
+    free( varName );
+    return varIndex;
+}
+
+ssize_t getVarIndex( char* varName ){
+    assert( varName );
+
+    for( size_t varIndex = 0; varIndex < infoForVarArray.freeIndexNow; varIndex++ ){
+        if( strcmp( varName, arrayWithVariables[varIndex].nameOfVariable ) == 0 ){
+            return arrayWithVariables[varIndex].variableIndexInArray;
+        }
+    }
+    return -1;
 }
 
 node_t* differentiation( const node_t* node, size_t variable, FILE* fileForDump ){
@@ -71,13 +104,11 @@ node_t* differentiation( const node_t* node, size_t variable, FILE* fileForDump 
         return nodeAfterDifferentiation;
     }
 
-
-
     for( size_t diffIndex = 0; diffIndex < sizeOfMathArray; diffIndex++ ){
         if( node->data.mathOperation == arrayWithMathInfo[ diffIndex ].mathOperation ){
             node_t* newNode = NULL;
             newNode = arrayWithMathInfo[ diffIndex ].differentiationFunc( node, variable, fileForDump );
-            printResultOfDifferentiation( fileForDump, (node_t*)node, newNode );
+            printResultOfDifferentiation( fileForDump, (node_t*)node, newNode, variable );
             return newNode;
         }
     }
@@ -596,7 +627,7 @@ void destroyArrayWithVariables(){
 }
 
 void printArrayWithVariablesInFile(){
-    colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will save info about variables " );
+    colorPrintf( NOMODE, YELLOW, "Enter the name of file, where i will save info about variables: " );
 
     char* nameOfFileForVar = NULL;
     size_t sizeOfAllocationMemory = 0;

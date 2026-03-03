@@ -16,13 +16,14 @@ int main(){
     FILE* fileForLatex = beginMathDump( nameOfFileForLatex );
 
     createTreeByRecursiveDescent( &tree );
+    dumpTree( &tree );
 
     tree_t differentiationTree = {};
     differentiationOfTheFunction( &tree, &differentiationTree, fileForLatex );
 
     dumpMathTree( &tree, fileForLatex );
     endMathDump( fileForLatex, nameOfFileForLatex );
-    dumpTree( &tree );
+
     destroyTree( &tree );
     destroyTree( &differentiationTree );
 

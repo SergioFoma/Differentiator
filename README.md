@@ -55,7 +55,7 @@ Build/Result.out
 |           Арксинус                       |      arcsin            |
 |           Арккосинус                     |      arccos            |
 |           Арктангенс                     |      arctg             |
-|           Арккатангенс                   |      arcctg            |
+|           Арккотангенс                   |      arcctg            |
 |           Гиперболический синус          |      sh                |
 |           Гиперболический косинус        |      ch                |
 |           Гиперболический тангенс        |      th                |
@@ -82,15 +82,17 @@ exp(10)*ln(17)*sin(x)$
 Build/Result.out
 ```
 
-3. Дифференциатор сделает два запроса:
+3. Дифференциатор сделает три запроса:
 
     - Файл, куда Вы хотите сохранить код LaTeX
     - Файл, в котором дифференциатору необходимо искать математическое выражение
+    - Имя переменной, по которой вы хотите произвести дифференцирование
 
 Пример:
 ```
 Enter the name of file, where i will save latex dump: expressionLatex.tex
 Enter the name of file, where i will find mathematical statement: mathExpression.txt
+Enter the name of the variable by which you want to differentiate: y
 ```
 
 4. При успешном завершении дифференцирования программа создаст LaTeX и pdf файлы с пошаговым

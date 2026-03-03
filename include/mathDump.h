@@ -19,7 +19,7 @@ void endMathDump( FILE* fileForLatex, char* nameOfFileForLatexDump );
 
 void printMathematicalFormulas( FILE* fileForPrint, node_t* node );
 
-void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode );
+void printResultOfDifferentiation( FILE* fileForPrint, node_t* originalNode, node_t* diffNode, size_t variable);
 
 void printNumberInLatex( FILE* fileForLatex, node_t* node );
 
@@ -34,5 +34,7 @@ void printFunctionOfTwoArguments( FILE* fileForLatex, node_t* node );
 void printFunctionOfOneArguments( FILE* fileForLatex, node_t* node );
 
 void printFunctionWithOneStaples( FILE* fileForLatex, node_t* node );
+
+char* getVarName( size_t variable );
 
 #endif
