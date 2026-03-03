@@ -99,8 +99,8 @@ Enter the name of the variable by which you want to differentiate: y
 дифференцированием.
 
 ```tex
-\[ \frac{ d }{ dx }( sin  \left(  x  \right) ) = cos  \left(  x  \right) \cdot  1  \]
-\[ \frac{ d }{ dx }( ln \left(  17  \right) ) = \frac{ 0 }{ 17 } \]
+\[ \frac{ d }{ d(y) }( ln \left(  17  \right) ) = \frac{ 0 }{ 17 } \]
+\[ \frac{ d }{ d(y) }( e^{ y }) = e^{ y }\cdot  1  \]
 ...
 ```
 # Примеры генерации PDF 📄
