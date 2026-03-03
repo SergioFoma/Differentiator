@@ -30,7 +30,7 @@ FILE* beginMathDump( char* nameOfFileForLatexDump ){
         return NULL;
     }
 
-    fprintf( fileForLatex, "\\documentclass[12pt, litterpaper]{article}\n"
+    fprintf( fileForLatex, "\\documentclass[12pt, letterpaper]{article}\n"
                             "\\usepackage{graphicx}\n"
                             "\\usepackage{mathtext}\n"
                             "\\usepackage[utf8]{inputenc}\n"
@@ -41,7 +41,7 @@ FILE* beginMathDump( char* nameOfFileForLatexDump ){
 
     );
 
-    fprintf( fileForLatex, "\\textb{Дифференцирование математический функций в LaTeX:}\n"
+    fprintf( fileForLatex, "\\textbf{Дифференцирование математический функций в LaTeX:}\n"
                             "\\newline\n\\newline\n"
     );
 
@@ -69,7 +69,6 @@ void endMathDump( FILE* fileForLatex, char* nameOfFileForLatexDump ){
 
     fclose( fileForLatex );
     free( nameOfFileForLatexDump );
-
 }
 
 void printMathematicalFormulas( FILE* fileForLatex, node_t* node ){

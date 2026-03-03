@@ -23,7 +23,7 @@ double doMathOperations( node_t* node, double firstNumber, double secondNumber )
 
 mathErrors differentiationOfTheFunction( tree_t* tree, tree_t* differentiationTree, FILE* fileForDump );
 
-node_t* differentiation( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump );
+node_t* differentiation( const node_t* node, size_t variable, FILE* fileForDump );
 
 node_t* copyNode( node_t* node );
 
@@ -39,33 +39,37 @@ void removingNeutralElements( tree_t* treeForOptimisation );
 
 void optimisationNeutralElem( node_t* node );
 
-node_t* differentiationAdd( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationSub( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationMul( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationDiv( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationLn( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationLog( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationSin( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationCos( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationTg( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationCtg( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationArcsin( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationArccos( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationArctg( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationArcctg( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationSh( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationCh( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationTh( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationCth( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationExp( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationSqrt( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump);
-node_t* differentiationPow( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump );
+node_t* differentiationAdd( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationSub( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationMul( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationDiv( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationLn( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationLog( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationSin( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationCos( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationTg( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationCtg( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationArcsin( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationArccos( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationArctg( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationArcctg( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationSh( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationCh( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationTh( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationCth( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationExp( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationSqrt( const node_t* node, size_t variable, FILE* fileForDump);
+node_t* differentiationPow( const node_t* node, size_t variable, FILE* fileForDump );
 
-statusOfFind variableSearching( const node_t* node, variablesAndTheyIndex variable );
+statusOfFind variableSearching( const node_t* node, size_t variable );
 
 double doAdd( double firstNumber, double secondNumber );
 double doSub( double firstNumber, double secondNumber );
 double doMul( double firstNumber, double secondNumber );
 double doDiv( double firstNumber, double secondNumber );
+
+void destroyArrayWithVariables();
+
+void printArrayWithVariablesInFile();
 
 #endif

@@ -52,7 +52,7 @@ treeErrors initializationDataInNode( node_t** node, typeOfDataInNode typeOfData,
             break;
         case VARIABLE:
             (*node)->nodeValueType = VARIABLE;
-            (*node)->data.variableInArray = element.variableInArray;
+            (*node)->data.variableIndexInArray = element.variableIndexInArray;
             break;
         default:
             return NOT_CORRECT_TYPE_OF_DATA;

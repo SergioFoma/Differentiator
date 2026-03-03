@@ -29,8 +29,8 @@ void dumpNode( node_t* node, int rank, FILE* treeFile ){
     }
     else if( node->nodeValueType == VARIABLE){
         fprintf( treeFile, "\tnode%lx [shape=\"plain\"; style =\"filled\"; fillcolor =\"lightskyblue2\"; label = "
-                            "<<table><tr><td colspan = \"2\" > %p </td></tr> <tr><td colspan = \"2\" > parent = %p </td></tr> <tr><td width = \"100\" colspan = \"2\" > type = %s </td></tr> <tr><td width = \"100\" colspan = \"2\" > val = %d (%s) </td></tr> ",
-                            ( unsigned long )node, node, node->parent, stringNodeValueType, node->data.variableInArray, getStringOfVariable( node )  );
+                            "<<table><tr><td colspan = \"2\" > %p </td></tr> <tr><td colspan = \"2\" > parent = %p </td></tr> <tr><td width = \"100\" colspan = \"2\" > type = %s </td></tr> <tr><td width = \"100\" colspan = \"2\" > val = %lu (%s) </td></tr> ",
+                            ( unsigned long )node, node, node->parent, stringNodeValueType, node->data.variableIndexInArray, getStringOfVariable( node )  );
     }
 
     if( node->left ){
@@ -223,8 +223,8 @@ const char* getStringOfVariable( const node_t* node ){
         return NULL;
     }
 
-    for( size_t variableIndex = 0; variableIndex < sizeOfArrayWithVariables; variableIndex++ ){
-        if( node->data.variableInArray == arrayWithVariables[ variableIndex ].variable ){
+    for( size_t variableIndex = 0; variableIndex < infoForVarArray.freeIndexNow; variableIndex++ ){
+        if( node->data.variableIndexInArray == arrayWithVariables[ variableIndex ].variableIndexInArray ){
             return arrayWithVariables[ variableIndex ].nameOfVariable;
         }
     }

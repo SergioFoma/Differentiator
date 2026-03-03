@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "mathOperatorsInfo.h"
 #include "mathDump.h"
@@ -30,35 +31,9 @@ informationWithMathOperators arrayWithMathInfo[] = {
 };
 const size_t sizeOfMathArray = sizeof( arrayWithMathInfo ) / sizeof( arrayWithMathInfo[ 0 ] );
 
-informationWithVariables arrayWithVariables[] = {
-    { X, "x" },
-    { Y, "y" },
-    { I, "i" },
-    { J, "j" },
-    { K, "k" },
-    { L, "l" },
-    { M, "m" },
-    { N, "n" },
-    { O, "o" },
-    { P, "p" },
-    { Q, "q" },
-    { R, "r" },
-    { S, "s" },
-    { A, "a" },
-    { B, "b" },
-    { C, "c" },
-    { Z, "z" },
-    { W, "w" },
-    { D, "d" },
-    { E, "e" },
-    { F, "f" },
-    { T, "t" },
-    { U, "u" },
-    { V, "v" },
-    { G, "g" },
-    { H, "h" }
-};
-const size_t sizeOfArrayWithVariables = sizeof( arrayWithVariables ) / sizeof( arrayWithVariables[ 0 ] );
+size_t startIndexForArrayWithVar = 0;
+informationWithVariables* arrayWithVariables = ( informationWithVariables* )calloc( startIndexForArrayWithVar + 1, sizeof( informationWithVariables ) );
+informationWithVariablesArray infoForVarArray = { startIndexForArrayWithVar + 1, startIndexForArrayWithVar };
 
 informationWithValueType arrayWithValueType[] = {
         { NUMBER, "NUMBER"},

@@ -22,13 +22,9 @@ int main(){
 
     dumpMathTree( &tree, fileForLatex );
     endMathDump( fileForLatex, nameOfFileForLatex );
-
     dumpTree( &tree );
     destroyTree( &tree );
     destroyTree( &differentiationTree );
 
     return 0;
 }
-
-
-

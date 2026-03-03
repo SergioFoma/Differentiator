@@ -26,7 +26,7 @@ struct informationWithMathOperators {
     void(*printInLatex)( FILE* fileForLatex, node_t* node );
     const char* viewInLatex;
     double(*doMathOperation)( double firstNumber, double doubleSecondNumber );
-    node_t*(*differentiationFunc)( const node_t* node, variablesAndTheyIndex variable, FILE* fileForDump );
+    node_t*(*differentiationFunc)( const node_t* node, size_t variable, FILE* fileForDump );
     functionClasses functionClass;
 };
 
@@ -34,12 +34,17 @@ extern informationWithMathOperators arrayWithMathInfo[];
 extern const size_t sizeOfMathArray;
 
 struct informationWithVariables {
-    variablesAndTheyIndex variable;
-    const char* nameOfVariable;
+    char* nameOfVariable;
+    size_t variableIndexInArray;
 };
 
-extern informationWithVariables arrayWithVariables[];
-extern const size_t sizeOfArrayWithVariables;
+struct informationWithVariablesArray {
+    size_t capacity;
+    size_t freeIndexNow;
+};
+
+extern informationWithVariables* arrayWithVariables;
+extern informationWithVariablesArray infoForVarArray;
 
 
 #endif
